@@ -1,47 +1,71 @@
-import { Button, DarkThemeToggle, Sidebar } from "flowbite-react";
+import { Button, Sidebar } from "flowbite-react";
 import {
   BiBarChartSquare,
   BiCategory,
-  BiChevronLeft,
   BiCog,
   BiCreditCardFront,
   BiLogOut,
+  BiMenu,
   BiMoneyWithdraw,
 } from "react-icons/bi";
+import { LogoComponent } from "./LogoComponent";
+import { SidebarButtons } from "./SidebarButtons";
 
-export const SidebarComponent = () => {
+type TSidebarComponent = {
+  handleClick: () => void;
+  smallSidebar: boolean;
+  mobile?: boolean;
+  closeMenu: () => void;
+};
+export const SidebarComponent = ({
+  handleClick,
+  smallSidebar,
+  closeMenu,
+}: TSidebarComponent) => {
+  const navigation = [
+    { title: "Dashboard", to: "/", icon: BiBarChartSquare },
+    { title: "Income", to: "/", icon: BiMoneyWithdraw },
+    { title: "Expenses", to: "/", icon: BiCreditCardFront },
+    { title: "Setting", to: "/", icon: BiCog },
+    { title: "Categories", to: "/", icon: BiCategory },
+    { title: "Log Out", to: "/", icon: BiLogOut },
+  ];
   return (
-    <Sidebar aria-label="Default sidebar example" className="relative h-screen">
-      <div className="absolute-full color-bg">
-        <Sidebar.Items>
-          <Sidebar.ItemGroup>
-            <Sidebar.Item href="#" icon={BiBarChartSquare}>
-              Dashboard
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiMoneyWithdraw}>
-              Income
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiCreditCardFront} label="3">
-              Expenses
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiCog}>
-              Setting
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiCategory}>
-              Categories
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={BiLogOut}>
-              Log Out
-            </Sidebar.Item>
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-        <div className="absolute right-[-1rem] top-10 flex flex-col gap-1">
-          <DarkThemeToggle className="btn-control-sidebar btn-anim-opacity p-1" />
-          <Button className="btn-control-sidebar btn-anim-opacity">
-            <BiChevronLeft className="size-7" />
+    <Sidebar
+      aria-label="Default sidebar example"
+      className="relative h-screen w-full"
+    >
+      <div className="absolute-full color-bg w-full">
+        <div className="md:hidden flex justify-end">
+          <Button
+            size="xs"
+            className="btn-hamburguer btn-anim-opacity"
+            onClick={closeMenu}
+          >
+            <BiMenu size="30" />
           </Button>
         </div>
+        <LogoComponent />
+        <Sidebar.Items className="fixed top-[9rem] w-full">
+          <Sidebar.ItemGroup>
+            {navigation.map((nav, index) => (
+              <Sidebar.Item
+                key={index}
+                href={nav.to}
+                className="py-4 rounded-none"
+              >
+                <div className="flex items-center w-full">
+                  <span className="text-2xl font-thin mr-6">
+                    {<nav.icon />}
+                  </span>
+                  <span>{nav.title}</span>
+                </div>
+              </Sidebar.Item>
+            ))}
+          </Sidebar.ItemGroup>
+        </Sidebar.Items>
       </div>
+      <SidebarButtons handleClick={handleClick} smallSidebar={smallSidebar} />
     </Sidebar>
   );
 };

@@ -3,10 +3,16 @@
 
 @layer components {
   .color-text {
-    @apply !text-slate-950 dark:!text-white;
+    @apply !text-slate-950 dark:!text-slate-50;
+  }
+  .color-text-reverse {
+    @apply !text-slate-50 dark:!text-slate-950;
   }
   .color-bg {
     @apply !bg-slate-50 dark:!bg-slate-950;
+  }
+  .color-bg-reverse {
+    @apply !bg-slate-950 dark:!bg-slate-50;
   }
   .color-shadow {
     @apply shadow-md  shadow-slate-500/80 dark:shadow-sky-900/80;
@@ -21,7 +27,10 @@
     @apply opacity-70 hover:opacity-100 transition;
   }
   .btn-control-sidebar {
-    @apply size-7 flex-center color-text !bg-slate-50 dark:!bg-slate-800 color-shadow !rounded-full;
+    @apply size-6 flex-center color-text !bg-slate-50 dark:!bg-slate-800 color-shadow !rounded-full;
+  }
+  .btn-hamburguer {
+    @apply !block md:!hidden !bg-transparent color-text hover:!bg-transparent;
   }
 }
 @tailwind utilities;
