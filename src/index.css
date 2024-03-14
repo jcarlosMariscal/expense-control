@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+
+@layer components {
+  .color-text {
+    @apply !text-slate-950 dark:!text-white;
+  }
+  .color-bg {
+    @apply !bg-slate-50 dark:!bg-slate-950;
+  }
+  .color-shadow {
+    @apply shadow-md  shadow-slate-500/80 dark:shadow-sky-900/80;
+  }
+  .absolute-full {
+    @apply absolute top-0 bottom-0 left-0 right-0;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .btn-anim-opacity {
+    @apply opacity-70 hover:opacity-100 transition;
+  }
+  .btn-control-sidebar {
+    @apply size-7 flex-center color-text !bg-slate-50 dark:!bg-slate-800 color-shadow !rounded-full;
+  }
+}
+@tailwind utilities;
+* {
+  --tw-ring-color: rgb(0 0 0 / 0) !important;
+}
