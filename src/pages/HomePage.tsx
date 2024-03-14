@@ -34,4 +34,3 @@ export const HomePage = () => {
     </>
   );
 };
-// 50

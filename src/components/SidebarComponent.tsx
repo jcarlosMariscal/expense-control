@@ -1,4 +1,4 @@
-import { Button, Sidebar } from "flowbite-react";
+import { Sidebar } from "flowbite-react";
 import {
   BiBarChartSquare,
   BiCategory,
@@ -6,10 +6,10 @@ import {
   BiCreditCardFront,
   BiLogOut,
   BiMoneyWithdraw,
-  BiX,
 } from "react-icons/bi";
 import { LogoComponent } from "./LogoComponent";
 import { SidebarButtons } from "./SidebarButtons";
+import { MenuButton } from "./Pure/MenuButton";
 
 type TSidebarComponent = {
   handleClick: () => void;
@@ -31,33 +31,20 @@ export const SidebarComponent = ({
     { title: "Log Out", to: "/", icon: BiLogOut },
   ];
   return (
-    <Sidebar
-      aria-label="Default sidebar example"
-      className="relative h-screen w-full"
-    >
-      <div className="absolute-full color-bg border-r border-light dark:border-dark">
+    <Sidebar aria-label="Expense Control Sidebar" className="sidebar">
+      <div className="sidebar-container">
         <div className="md:hidden flex justify-end">
-          <Button
-            size="xs"
-            className="btn-hamburguer btn-anim-opacity"
-            onClick={closeMenu}
-          >
-            <BiX size="30" />
-          </Button>
+          <MenuButton handleClick={closeMenu} active={true} />
         </div>
+        <div className="sidebar-gradient"></div>
+
         <LogoComponent />
-        <Sidebar.Items className="fixed top-[9rem] w-full ssm:w-60 lg:w-[16.1rem]">
+        <Sidebar.Items className="sidebar-items">
           <Sidebar.ItemGroup>
             {navigation.map((nav, index) => (
-              <Sidebar.Item
-                key={index}
-                href={nav.to}
-                className="py-4 rounded-none hover:bg-slate-300"
-              >
+              <Sidebar.Item key={index} href={nav.to} className="sidebar-item">
                 <div className="flex items-center">
-                  <span className="text-2xl font-thin mr-6">
-                    {<nav.icon />}
-                  </span>
+                  <span className="sidebar-item-icon">{<nav.icon />}</span>
                   <span className="font-thin">{nav.title}</span>
                 </div>
               </Sidebar.Item>
