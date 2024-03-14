@@ -12,7 +12,7 @@ export const SidebarButtons = ({
 }: TSidebarButtons) => {
   return (
     <div className="absolute right-[-.8rem] top-[7rem] lg:top-20 flex flex-col gap-2 z-50">
-      <DarkThemeToggle className="btn-control-sidebar btn-anim-opacity p-[.1rem]" />
+      <DarkThemeToggle className="hidden ssm:block btn-control-sidebar btn-anim-opacity p-[.1rem]" />
       <div className="hidden lg:block">
         <Button
           className="btn-control-sidebar btn-anim-opacity"
