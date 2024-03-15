@@ -13,18 +13,18 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
     <div className="header">
       <div className="flex items-center">
         <MenuButton handleClick={toggleMenu} />
-        <div className="">
-          <Button
-            size="xs"
-            className="size-10 ssm:size-auto !flex-center"
-            // color="purple"
-            gradientMonochrome="purple"
-            pill
-          >
-            <BiPlus className="size-6" />
-            <span className="hidden ssm:block ml-2 text-sm">New</span>
-          </Button>
-        </div>
+        {/* <div className=""> */}
+        <Button
+          size="xs"
+          className="size-10 ssm:size-auto !flex-center"
+          color="blue"
+          // gradientMonochrome="cyan"
+          pill
+        >
+          <BiPlus className="size-6" />
+          <span className="hidden ssm:block ml-2 text-sm">New</span>
+        </Button>
+        {/* </div> */}
       </div>
       <Dropdown
         label=""

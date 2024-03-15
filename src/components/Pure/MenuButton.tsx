@@ -8,8 +8,10 @@ export const MenuButton = ({ handleClick, active = false }: TMenuButton) => {
   return (
     <Button
       size="xs"
-      className="btn-hamburguer btn-anim-opacity"
+      color="blue"
+      className="btn-hamburguer size-10 mr-3 p-0"
       onClick={handleClick}
+      pill
     >
       {active ? <BiX size="30" /> : <BiMenu size="30" />}
     </Button>
