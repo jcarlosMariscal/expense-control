@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      inter: ["Inter", "sans-serif"],
+    },
     screens: {
       ssm: "420px",
       sm: "640px",

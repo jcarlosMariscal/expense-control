@@ -7,10 +7,11 @@ import {
   BiLogOut,
   BiMoneyWithdraw,
 } from "react-icons/bi";
-import { LogoComponent } from "../LogoComponent";
-import { SidebarButtons } from "../SidebarButtons";
+import { LogoComponent } from "./LogoComponent";
+import { SidebarButtons } from "./SidebarButtons";
 import { MenuButton } from "../Pure/MenuButton";
 import { NavLink } from "react-router-dom";
+import { BackgroundGradient } from "../Pure/BackgroundGradient";
 
 type TSidebarComponent = {
   handleClick: () => void;
@@ -32,12 +33,17 @@ export const SidebarContent = ({
     { title: "Log Out", to: "/log-out", icon: BiLogOut },
   ];
   return (
-    <Sidebar aria-label="Expense Control Sidebar" className="sidebar">
+    <Sidebar aria-label="Expense Control Sidebar" className="sidebar h-screen">
       <div className="sidebar-container">
         <div className="lg:hidden flex justify-end mt-4">
           <MenuButton handleClick={toggleMenu} active={true} />
         </div>
-        <div className="sidebar-gradient"></div>
+        <BackgroundGradient
+          position="top-[6rem] right-[-8rem]"
+          size="w-[12rem] h-[18rem] hidden lg:block"
+          bg="gradient-sidebar"
+          blur="blur-3xl"
+        />
         <LogoComponent />
         <Sidebar.Items className="sidebar-items">
           <Sidebar.ItemGroup>

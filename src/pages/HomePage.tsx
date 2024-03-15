@@ -8,7 +8,7 @@ export const HomePage = () => {
   const toggleMenu = () => setMenuMobile(!menuMobile);
   return (
     <>
-      <div className="flex">
+      <div className="flex font-inter">
         <SidebarComponent menuMobile={menuMobile} toggleMenu={toggleMenu} />
         <div className="content-main">
           <HeaderComponent toggleMenu={toggleMenu} />

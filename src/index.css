@@ -24,7 +24,7 @@
     @apply !bg-white dark:!bg-slate-900;
   }
   .color-bg-thirty {
-    @apply !bg-slate-200 dark:!bg-slate-800;
+    @apply !bg-slate-50 dark:!bg-slate-950;
   }
   .color-bg-reverse {
     @apply !bg-slate-950 dark:!bg-slate-100;
@@ -68,10 +68,12 @@
   }
   /* SIDEBAR */
   .sidebar {
-    @apply relative !h-screen !w-full;
+    @apply fixed !h-screen !w-full;
   }
+  /* AQUI */
   .sidebar-container {
-    @apply absolute-full color-bg-primary border-r border-color;
+    /* @apply absolute-full color-bg-primary border-r border-color !bg-blue-800; */
+    @apply absolute-full border-r border-color !bg-blue-800;
   }
   .sidebar-items {
     @apply fixed top-[7rem] lg:top-[8rem] w-full ssm:w-60 lg:w-[16.1rem];
@@ -86,11 +88,12 @@
   .sidebar-item-icon {
     @apply text-2xl font-thin mr-6;
   }
+  /* AQUÍ */
   .sidebar-btns {
     @apply absolute right-[-.8rem] top-[7rem] lg:top-20 flex flex-col gap-2 z-50;
   }
   .sidebar-gradient {
-    @apply absolute top-[6rem] right-[-8rem] w-[12rem] h-[18rem] blur-3xl rounded-full gradient-custom dark:gradient-custom-dark z-0 hidden md:block;
+    @apply absolute rounded-full;
   }
   /* Dashboard */
   .content-main {
@@ -113,9 +116,9 @@
 
   /* SECTIONS */
   .page-container {
-    @apply w-full py-3 px-0 ssm:py-3 ssm:px-7;
+    @apply w-full py-3 px-2 ssm:py-3 ssm:px-7;
   }
-  .gradient-custom {
+  .gradient-sidebar {
     background: transparent;
     background: -webkit-linear-gradient(
       to bottom,
@@ -125,14 +128,30 @@
     background: linear-gradient(to bottom, rgb(14 159 110), rgb(63 131 248));
     animation: anim infinite 1.5s alternate;
   }
-  .gradient-custom-dark {
+  .gradient-card {
     background: transparent;
+    transform: rotate(150deg) !important;
     background: -webkit-linear-gradient(
       to bottom,
-      rgb(14 159 110),
-      rgb(63 131 248)
+      rgb(3, 43, 70),
+      rgb(117, 37, 104)
     );
-    background: linear-gradient(to bottom, rgb(14 159 110), rgb(63 131 248));
+    background: linear-gradient(
+      to bottom,
+      rgb(110, 189, 241),
+      rgb(245, 142, 228)
+    );
+    animation: anim infinite 1.5s alternate;
+  }
+  .gradient-card-dark {
+    background: transparent;
+    transform: rotate(150deg) !important;
+    background: -webkit-linear-gradient(
+      to bottom,
+      rgb(3, 43, 70),
+      rgb(117, 37, 104)
+    );
+    background: linear-gradient(to bottom, rgb(3, 43, 70), rgb(117, 37, 104));
     animation: anim infinite 1.5s alternate;
   }
 
