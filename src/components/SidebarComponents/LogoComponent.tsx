@@ -6,8 +6,8 @@ export const LogoComponent = () => {
         <span className="span-c">C</span>
       </div>
       <div className="color-text text-center ml-3">
-        <span className="block text-2xl md:text-3xl">Expense</span>
-        <span className="block text-md md:text-lg text-right">Control</span>
+        <span className="block text-2xl md:text-xl xl:text-3xl">Expense</span>
+        <span className="block text-sm md:text-md text-right">Control</span>
       </div>
     </div>
   );

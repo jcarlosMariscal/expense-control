@@ -148,6 +148,130 @@ export const DashboardPage = () => {
                   rel="noopener noreferrer"
                   className="z-10 w-full"
                 >
+                  <img
+                    src={expenseControl}
+                    alt="Expense control"
+                    className="size-full"
+                  />
+                </a>
+                <BackgroundGradient
+                  size="absolute w-[18rem] h-[18rem]"
+                  bg="gradient-card dark:gradient-card-dark"
+                  blur="blur-2xl"
+                />
+              </div>
+            </div>
+          </Card>
+          <Card className="w-full color-bg-thirty border-none relative overflow-hidden mt-5">
+            <div className="flex text-color">
+              <div className="w-8/12">
+                <div className="flex items-center gap-2 text-sm">
+                  <span>🔥 Available Now</span> |
+                  <Badge color="blue" size="xs" icon={HiClock}>
+                    3 days ago
+                  </Badge>
+                </div>
+                <h5 className="my-2 text-lg font-bold tracking-tight">
+                  Noteworthy technology acquisitions 2021
+                </h5>
+                <p className="font-normal mb-5">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+                <Button color="blue" pill>
+                  <div className="flex items-center gap-2">
+                    <span>Read more</span>
+                    <BiRightArrowAlt size="20" />
+                  </div>
+                </Button>
+              </div>
+              <div className="w-4/12 flex-center">
+                <a
+                  href="https://www.freepik.com/free-vector/tax-preparation-concept-illustration_38686713.htm#query=cost%20control&position=48&from_view=keyword&track=ais&uuid=9d898a52-caa8-4678-adb9-539e7e9891f7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="z-10 w-full"
+                >
+                  <img src={expenseControl} alt="Expense control" />
+                </a>
+                <BackgroundGradient
+                  size="w-[18rem] h-[18rem]"
+                  bg="gradient-card dark:gradient-card-dark"
+                  blur="blur-2xl"
+                />
+              </div>
+            </div>
+          </Card>
+          <Card className="w-full color-bg-thirty border-none relative overflow-hidden mt-5">
+            <div className="flex text-color">
+              <div className="w-8/12">
+                <div className="flex items-center gap-2 text-sm">
+                  <span>🔥 Available Now</span> |
+                  <Badge color="blue" size="xs" icon={HiClock}>
+                    3 days ago
+                  </Badge>
+                </div>
+                <h5 className="my-2 text-lg font-bold tracking-tight">
+                  Noteworthy technology acquisitions 2021
+                </h5>
+                <p className="font-normal mb-5">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+                <Button color="blue" pill>
+                  <div className="flex items-center gap-2">
+                    <span>Read more</span>
+                    <BiRightArrowAlt size="20" />
+                  </div>
+                </Button>
+              </div>
+              <div className="w-4/12 flex-center">
+                <a
+                  href="https://www.freepik.com/free-vector/tax-preparation-concept-illustration_38686713.htm#query=cost%20control&position=48&from_view=keyword&track=ais&uuid=9d898a52-caa8-4678-adb9-539e7e9891f7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="z-10 w-full"
+                >
+                  <img src={expenseControl} alt="Expense control" />
+                </a>
+                <BackgroundGradient
+                  size="w-[18rem] h-[18rem]"
+                  bg="gradient-card dark:gradient-card-dark"
+                  blur="blur-2xl"
+                />
+              </div>
+            </div>
+          </Card>
+          <Card className="w-full color-bg-thirty border-none relative overflow-hidden mt-5">
+            <div className="flex text-color">
+              <div className="w-8/12">
+                <div className="flex items-center gap-2 text-sm">
+                  <span>🔥 Available Now</span> |
+                  <Badge color="blue" size="xs" icon={HiClock}>
+                    3 days ago
+                  </Badge>
+                </div>
+                <h5 className="my-2 text-lg font-bold tracking-tight">
+                  Noteworthy technology acquisitions 2021
+                </h5>
+                <p className="font-normal mb-5">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+                <Button color="blue" pill>
+                  <div className="flex items-center gap-2">
+                    <span>Read more</span>
+                    <BiRightArrowAlt size="20" />
+                  </div>
+                </Button>
+              </div>
+              <div className="w-4/12 flex-center">
+                <a
+                  href="https://www.freepik.com/free-vector/tax-preparation-concept-illustration_38686713.htm#query=cost%20control&position=48&from_view=keyword&track=ais&uuid=9d898a52-caa8-4678-adb9-539e7e9891f7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="z-10 w-full"
+                >
                   <img src={expenseControl} alt="Expense control" />
                 </a>
                 <BackgroundGradient

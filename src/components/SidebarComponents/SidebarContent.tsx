@@ -2,13 +2,13 @@ import { Sidebar } from "flowbite-react";
 import {
   BiBarChartSquare,
   BiCategory,
+  BiChevronLeft,
   BiCog,
   BiCreditCardFront,
   BiLogOut,
   BiMoneyWithdraw,
 } from "react-icons/bi";
 import { LogoComponent } from "./LogoComponent";
-import { SidebarButtons } from "./SidebarButtons";
 import { MenuButton } from "../Pure/MenuButton";
 import { NavLink } from "react-router-dom";
 import { BackgroundGradient } from "../Pure/BackgroundGradient";
@@ -32,35 +32,52 @@ export const SidebarContent = ({
     { title: "Categories", to: "/categories", icon: BiCategory },
     { title: "Log Out", to: "/log-out", icon: BiLogOut },
   ];
+  const rotate = smallSidebar ? "rotate-180" : "";
   return (
-    <Sidebar aria-label="Expense Control Sidebar" className="sidebar h-screen">
-      <div className="sidebar-container">
-        <div className="lg:hidden flex justify-end mt-4">
-          <MenuButton handleClick={toggleMenu} active={true} />
-        </div>
-        <BackgroundGradient
-          position="top-[6rem] right-[-8rem]"
-          size="w-[12rem] h-[18rem] hidden lg:block"
-          bg="gradient-sidebar"
-          blur="blur-3xl"
-        />
-        <LogoComponent />
-        <Sidebar.Items className="sidebar-items">
-          <Sidebar.ItemGroup>
-            {navigation.map((nav, index) => (
-              <NavLink key={index} to={nav.to}>
+    <>
+      <Sidebar
+        aria-label="Expense Control Sidebar"
+        className="sidebar h-screen"
+      >
+        <div className="sidebar-container">
+          <div className="lg:hidden flex justify-end mt-4">
+            <MenuButton handleClick={toggleMenu} active={true} />
+          </div>
+          <BackgroundGradient
+            position="top-[6rem] right-[-8rem]"
+            size="w-[12rem] h-[18rem] hidden lg:block"
+            bg="gradient-sidebar"
+            blur="blur-3xl"
+          />
+          <LogoComponent />
+          <Sidebar.Items className="sidebar-items">
+            <Sidebar.ItemGroup>
+              {navigation.map((nav, index) => (
+                <NavLink key={index} to={nav.to}>
+                  <Sidebar.Item className="sidebar-item">
+                    <div className="flex items-center">
+                      <span className="sidebar-item-icon">{<nav.icon />}</span>
+                      <span className="text-md 2xl:text-2xl">{nav.title}</span>
+                    </div>
+                  </Sidebar.Item>
+                </NavLink>
+              ))}
+              <div onClick={handleClick} className="cursor-pointer">
                 <Sidebar.Item className="sidebar-item">
                   <div className="flex items-center">
-                    <span className="sidebar-item-icon">{<nav.icon />}</span>
-                    <span>{nav.title}</span>
+                    <span className="sidebar-item-icon">
+                      <BiChevronLeft className={`${rotate} transition-150`} />
+                    </span>
+                    <span className="text-md 2xl:text-2xl">
+                      Expand/Contract
+                    </span>
                   </div>
                 </Sidebar.Item>
-              </NavLink>
-            ))}
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </div>
-      <SidebarButtons handleClick={handleClick} smallSidebar={smallSidebar} />
-    </Sidebar>
+              </div>
+            </Sidebar.ItemGroup>
+          </Sidebar.Items>
+        </div>
+      </Sidebar>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Avatar, Button, Dropdown } from "flowbite-react";
+import { Avatar, Button, DarkThemeToggle, Dropdown } from "flowbite-react";
 import { BiChevronDown, BiPlus } from "react-icons/bi";
 import { MenuButton } from "./Pure/MenuButton";
 
@@ -26,21 +26,24 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
         </Button>
         {/* </div> */}
       </div>
-      <Dropdown
-        label=""
-        dismissOnClick={true}
-        renderTrigger={() => (
-          <div className="avatar-dropdown">
-            <Avatar img={image} rounded className="img-avatar" size="sm" />
-            <span className="hidden ssm:block ml-1">User</span>
-            <span className="text-xl">
-              <BiChevronDown />
-            </span>
-          </div>
-        )}
-      >
-        <Dropdown.Item>Dashboard</Dropdown.Item>
-      </Dropdown>
+      <div className="flex gap-2 items-center">
+        <DarkThemeToggle className="btn-theme" />
+        <Dropdown
+          label=""
+          dismissOnClick={true}
+          renderTrigger={() => (
+            <div className="avatar-dropdown">
+              <Avatar img={image} rounded className="img-avatar" size="sm" />
+              <span className="hidden ssm:block ml-1">User</span>
+              <span className="text-xl">
+                <BiChevronDown />
+              </span>
+            </div>
+          )}
+        >
+          <Dropdown.Item>Dashboard</Dropdown.Item>
+        </Dropdown>
+      </div>
     </div>
   );
 };

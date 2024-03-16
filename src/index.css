@@ -41,24 +41,26 @@
   .btn-anim-opacity {
     @apply opacity-70 hover:opacity-100 transition;
   }
-  .btn-control-sidebar {
-    @apply size-6 flex-center color-text !bg-slate-50 dark:!bg-slate-800 color-shadow !rounded-full;
-  }
+
   .btn-hamburguer {
-    @apply !block lg:!hidden color-text;
+    /* bg-transparent color-text hover:!bg-slate-300 hover:!bg-opacity-20 transition */
+    @apply !block lg:!hidden color-text !bg-transparent hover:!bg-slate-300 hover:!bg-opacity-20 transition;
   }
   .btn-theme {
-    @apply hidden ssm:block btn-control-sidebar btn-anim-opacity !p-[.1rem];
+    @apply !rounded-full !p-[.1rem] size-10 flex-center !bg-transparent color-text hover:!bg-slate-300 hover:!bg-opacity-20 transition;
+  }
+  .btn-theme svg {
+    @apply scale-150;
   }
   .menu-mobile {
-    @apply block lg:hidden w-full ssm:w-60 absolute top-0 z-20;
+    @apply block fixed lg:hidden w-full ssm:w-60 z-20;
   }
   /* LOGO PROJECT */
   .logo-content {
-    @apply h-10 px-2 flex fixed top-4 lg:top-10;
+    @apply h-10 px-2 xl:px-4 flex fixed top-4 lg:top-10;
   }
   .logo-content .custom-icon {
-    @apply size-12 rounded-full color-bg-reverse color-text-reverse relative;
+    @apply size-12 rounded-full color-bg-reverse color-text-reverse relative 2xl:ml-6 mr-6 lg:mr-2 2xl:mr-4;
   }
   .custom-icon .span-ex {
     @apply text-2xl absolute left-2;
@@ -70,30 +72,23 @@
   .sidebar {
     @apply fixed !h-screen !w-full;
   }
-  /* AQUI */
   .sidebar-container {
-    /* @apply absolute-full color-bg-primary border-r border-color !bg-blue-800; */
-    @apply absolute-full border-r border-color !bg-blue-800;
+    @apply absolute-full color-bg-primary;
   }
   .sidebar-items {
-    @apply fixed top-[7rem] lg:top-[8rem] w-full ssm:w-60 lg:w-[16.1rem];
+    @apply fixed top-[7rem] lg:top-[8rem] w-full;
   }
   .sidebar-item {
     @apply !py-4 !rounded-none hover:!bg-slate-600 hover:!bg-opacity-30 dark:hover:bg-slate-300 dark:hover:!bg-opacity-30 my-2 font-thin;
   }
   .sidebar-items ul a.active .sidebar-item {
-    /* border-left: 2px solid white; */
-    @apply border-l-4 border-blue-800 px-[0.23rem] text-blue-800 font-bold dark:border-blue-500 dark:text-blue-500;
+    @apply border-l-4 border-blue-800 px-[0.23rem] text-blue-800 dark:border-blue-500 dark:text-blue-500;
   }
   .sidebar-item-icon {
-    @apply text-2xl font-thin mr-6;
-  }
-  /* AQUÍ */
-  .sidebar-btns {
-    @apply absolute right-[-.8rem] top-[7rem] lg:top-20 flex flex-col gap-2 z-50;
+    @apply text-2xl px-0 2xl:text-[2.5rem] 2xl:px-3 font-thin mr-6 lg:mr-8 2xl:mr-6;
   }
   .sidebar-gradient {
-    @apply absolute rounded-full;
+    @apply relative rounded-full;
   }
   /* Dashboard */
   .content-main {

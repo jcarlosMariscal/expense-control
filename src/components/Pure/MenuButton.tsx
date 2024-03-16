@@ -8,7 +8,7 @@ export const MenuButton = ({ handleClick, active = false }: TMenuButton) => {
   return (
     <Button
       size="xs"
-      color="blue"
+      // color="blue"
       className="btn-hamburguer size-10 mr-3 p-0"
       onClick={handleClick}
       pill
