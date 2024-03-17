@@ -10,7 +10,7 @@ import {
 } from "react-icons/bi";
 import { LogoComponent } from "./LogoComponent";
 import { MenuButton } from "../Pure/MenuButton";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BackgroundGradient } from "../Pure/BackgroundGradient";
 
 type TSidebarComponent = {
@@ -24,6 +24,7 @@ export const SidebarContent = ({
   smallSidebar,
   toggleMenu,
 }: TSidebarComponent) => {
+  const navigate = useNavigate();
   const navigation = [
     { title: "Dashboard", to: "/", icon: BiBarChartSquare },
     { title: "Income", to: "/income", icon: BiMoneyWithdraw },
@@ -33,6 +34,9 @@ export const SidebarContent = ({
     { title: "Log Out", to: "/log-out", icon: BiLogOut },
   ];
   const rotate = smallSidebar ? "rotate-180" : "";
+  const redirectLink = (link: string) => {
+    navigate(link);
+  };
   return (
     <>
       <Sidebar
@@ -53,14 +57,18 @@ export const SidebarContent = ({
           <Sidebar.Items className="sidebar-items">
             <Sidebar.ItemGroup>
               {navigation.map((nav, index) => (
-                <NavLink key={index} to={nav.to}>
+                <div
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() => redirectLink(nav.to)}
+                >
                   <Sidebar.Item className="sidebar-item">
                     <div className="flex items-center">
                       <span className="sidebar-item-icon">{<nav.icon />}</span>
                       <span className="text-md 2xl:text-2xl">{nav.title}</span>
                     </div>
                   </Sidebar.Item>
-                </NavLink>
+                </div>
               ))}
               <div onClick={handleClick} className="cursor-pointer">
                 <Sidebar.Item className="sidebar-item">
