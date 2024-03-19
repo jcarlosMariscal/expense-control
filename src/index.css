@@ -135,6 +135,18 @@
   .card-info .card-description {
     @apply text-sm font-normal mb-5 hidden ssm:block lg:hidden xl:block;
   }
+
+  /* ------------------- TABLE --------------------  */
+  .table-cell {
+    @apply whitespace-nowrap font-medium;
+  }
+  .table-color {
+    @apply flex justify-center;
+  }
+  .table-color span {
+    @apply size-8 rounded-full flex-center text-white;
+  }
+
   /* ------------------- DASHBOARD PAGE --------------------  */
   .content-dashboard {
     @apply grid grid-cols-12 gap-4;
@@ -147,6 +159,9 @@
   }
   .charts-content .chart-size {
     @apply h-[15rem] sm:h-[25rem] md:h-[17.5rem] xl:h-[20rem] 2xl:h-[25rem] flex-center p-1 xl:p-4 color-bg-thirty rounded-lg;
+  }
+  /* ------------------- INCOME PAGE --------------------  */
+  .content-full {
   }
 }
 @tailwind utilities;
