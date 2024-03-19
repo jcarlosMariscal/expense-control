@@ -113,50 +113,40 @@
   .page-container {
     @apply w-full py-3 px-2 ssm:py-3 ssm:px-7;
   }
-  .gradient-sidebar {
-    background: transparent;
-    background: -webkit-linear-gradient(
-      to bottom,
-      rgb(14 159 110),
-      rgb(63 131 248)
-    );
-    background: linear-gradient(to bottom, rgb(14 159 110), rgb(63 131 248));
-    animation: anim infinite 1.5s alternate;
+  /* ------------------- CARDS --------------------  */
+  .cards-resume-app {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4;
   }
-  .gradient-card {
-    background: transparent;
-    transform: rotate(150deg) !important;
-    background: -webkit-linear-gradient(
-      to bottom,
-      rgb(3, 43, 70),
-      rgb(117, 37, 104)
-    );
-    background: linear-gradient(
-      to bottom,
-      rgb(110, 189, 241),
-      rgb(245, 142, 228)
-    );
-    animation: anim infinite 1.5s alternate;
+  .card-title {
+    @apply text-sm tracking-tight mr-0 ssm:mr-6;
   }
-  .gradient-card-dark {
-    background: transparent;
-    transform: rotate(150deg) !important;
-    background: -webkit-linear-gradient(
-      to bottom,
-      rgb(3, 43, 70),
-      rgb(117, 37, 104)
-    );
-    background: linear-gradient(to bottom, rgb(3, 43, 70), rgb(117, 37, 104));
-    animation: anim infinite 1.5s alternate;
+  .cards-resume-app .card-icon {
+    @apply hidden ssm:flex flex-center absolute top-5 right-1 size-10 rounded-full text-2xl;
   }
-
-  @keyframes anim {
-    from {
-      transform: scale(1.1);
-    }
-    to {
-      transform: scale(1);
-    }
+  .card-info {
+    @apply color-bg-thirty border-none mb-4 h-[20rem] lg:h-[17.5rem] xl:h-[20rem] 2xl:h-[25rem] color-text relative;
+  }
+  .card-info .card-span {
+    @apply absolute left-4 top-4 flex items-center gap-2 text-sm;
+  }
+  .card-info .card-title {
+    @apply my-2 text-lg font-bold tracking-tight;
+  }
+  .card-info .card-description {
+    @apply text-sm font-normal mb-5 hidden ssm:block lg:hidden xl:block;
+  }
+  /* ------------------- DASHBOARD PAGE --------------------  */
+  .content-dashboard {
+    @apply grid grid-cols-12 gap-4;
+  }
+  .content-dashboard .cards-info {
+    @apply col-span-12 lg:col-span-6;
+  }
+  .content-dashboard .charts-content {
+    @apply col-span-12 lg:col-span-6;
+  }
+  .charts-content .chart-size {
+    @apply h-[15rem] sm:h-[25rem] md:h-[17.5rem] xl:h-[20rem] 2xl:h-[25rem] flex-center p-1 xl:p-4 color-bg-thirty rounded-lg;
   }
 }
 @tailwind utilities;

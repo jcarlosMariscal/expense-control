@@ -11,7 +11,6 @@ import {
 import { LogoComponent } from "./LogoComponent";
 import { MenuButton } from "../Pure/MenuButton";
 import { useNavigate } from "react-router-dom";
-import { BackgroundGradient } from "../Pure/BackgroundGradient";
 
 type TSidebarComponent = {
   handleClick: () => void;
@@ -47,12 +46,6 @@ export const SidebarContent = ({
           <div className="lg:hidden flex justify-end mt-4">
             <MenuButton handleClick={toggleMenu} active={true} />
           </div>
-          <BackgroundGradient
-            position="top-[6rem] right-[-8rem]"
-            size="w-[12rem] h-[18rem] hidden lg:block"
-            bg="gradient-sidebar"
-            blur="blur-3xl"
-          />
           <LogoComponent />
           <Sidebar.Items className="sidebar-items">
             <Sidebar.ItemGroup>

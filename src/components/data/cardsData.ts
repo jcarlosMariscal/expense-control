@@ -31,7 +31,7 @@ export const cardsSup: TcardSimple[] = [
 export const card: TCardDashboard = {
   title: "Noteworthy technology acquisitions 2021",
   description:
-    "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
+    "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order. ",
   buttonTo: "/",
   buttonText: "Read more",
   image: expenseControl,
