@@ -8,6 +8,7 @@ import { DashboardPage } from "../pages/DashboardPage";
 import { IncomePage } from "../pages/IncomePage";
 import { HomePage } from "../pages/HomePage";
 import { ExpensesPage } from "../pages/ExpensesPage";
+import { SettingPage } from "../pages/SettingPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
         <Route index element={<DashboardPage />}></Route>
         <Route path="income" element={<IncomePage />}></Route>
         <Route path="expenses" element={<ExpensesPage />}></Route>
+        <Route path="setting" element={<SettingPage />}></Route>
       </Route>
       {/* <Route path="/login" element={<LoginPage />} /> */}
     </>

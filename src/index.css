@@ -92,6 +92,7 @@
   }
   /* Dashboard */
   .content-main {
+    /* w-80 2xl:w-[30rem] */
     @apply w-full min-h-screen color-bg-secondary z-10;
   }
   /* Others */

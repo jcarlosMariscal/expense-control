@@ -11,7 +11,9 @@ export const TableComponent = ({ data }: TTableComponent) => {
     <Table>
       <Table.Head>
         <Table.HeadCell>Name</Table.HeadCell>
-        <Table.HeadCell>Description</Table.HeadCell>
+        <Table.HeadCell className=" block lg:hidden">
+          Description
+        </Table.HeadCell>
         <Table.HeadCell>Date</Table.HeadCell>
         <Table.HeadCell className="flex justify-center">Color</Table.HeadCell>
         <Table.HeadCell>Category</Table.HeadCell>
@@ -24,7 +26,9 @@ export const TableComponent = ({ data }: TTableComponent) => {
         {data.map((item, index: number) => (
           <Table.Row key={index} className="color-bg-primary color-text">
             <Table.Cell className="table-cell">{item.name}</Table.Cell>
-            <Table.Cell className="table-cell">{item.description}</Table.Cell>
+            <Table.Cell className="table-cell lg:hidden">
+              {item.description}
+            </Table.Cell>
             <Table.Cell className="table-cell">{item.date}</Table.Cell>
             <Table.Cell className="table-color">
               <span className={item.color}>{item.icon}</span>

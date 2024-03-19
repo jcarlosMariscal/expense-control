@@ -9,7 +9,7 @@ export const IncomePage = () => {
         <span className="font-bold">Review your income</span>
       </SectionTitle>
       {/* <CardsResume /> */}
-      <div className="overflow-x-auto w-full">
+      <div className="overflow-x-auto">
         <TableComponent data={dataTable} />
       </div>
     </>
