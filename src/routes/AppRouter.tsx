@@ -9,6 +9,7 @@ import { IncomePage } from "../pages/IncomePage";
 import { HomePage } from "../pages/HomePage";
 import { ExpensesPage } from "../pages/ExpensesPage";
 import { SettingPage } from "../pages/SettingPage";
+import { CategoriesPage } from "../pages/CategoriesPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
         <Route path="income" element={<IncomePage />}></Route>
         <Route path="expenses" element={<ExpensesPage />}></Route>
         <Route path="setting" element={<SettingPage />}></Route>
+        <Route path="categories" element={<CategoriesPage />}></Route>
       </Route>
       {/* <Route path="/login" element={<LoginPage />} /> */}
     </>
