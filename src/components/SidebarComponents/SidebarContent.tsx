@@ -25,7 +25,7 @@ export const SidebarContent = ({
 }: TSidebarComponent) => {
   const navigate = useNavigate();
   const navigation = [
-    { title: "Dashboard", to: "/", icon: BiBarChartSquare },
+    { title: "Dashboard", to: "/dashboard", icon: BiBarChartSquare },
     { title: "Income", to: "/income", icon: BiMoneyWithdraw },
     { title: "Expenses", to: "/expenses", icon: BiCreditCardFront },
     { title: "Setting", to: "/setting", icon: BiCog },
