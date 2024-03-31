@@ -1,4 +1,4 @@
-import { TChartData } from "../../types/chartTypes";
+import { TChartData } from "../../interfaces/chartTypes";
 import { BarChartComponent } from "../Charts/BarChartComponent";
 import { dataChart1, dataChart2 } from "../data/chartsData";
 

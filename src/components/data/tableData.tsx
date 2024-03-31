@@ -1,5 +1,5 @@
 import { BiAddToQueue, BiBellMinus, BiCamera, BiCart } from "react-icons/bi";
-import { TDataTable } from "../../types/dataTables";
+import { TDataTable } from "../../interfaces/dataTables";
 export const dataTable: TDataTable[] = [
   {
     name: "Apple MacBook Pro 17",

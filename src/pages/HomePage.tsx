@@ -7,16 +7,14 @@ export const HomePage = () => {
   const [menuMobile, setMenuMobile] = useState(false);
   const toggleMenu = () => setMenuMobile(!menuMobile);
   return (
-    <>
-      <div className="flex">
-        <SidebarComponent menuMobile={menuMobile} toggleMenu={toggleMenu} />
-        <div className="content-main" id="contentMain">
-          <HeaderComponent toggleMenu={toggleMenu} />
-          <div className="page-container color-text">
-            <Outlet />
-          </div>
+    <div className="flex">
+      <SidebarComponent menuMobile={menuMobile} toggleMenu={toggleMenu} />
+      <div className="content-main" id="contentMain">
+        <HeaderComponent toggleMenu={toggleMenu} />
+        <div className="page-container color-text">
+          <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
 };

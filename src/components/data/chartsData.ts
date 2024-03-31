@@ -1,4 +1,4 @@
-import { TBarChart } from "../../types/chartTypes";
+import { TBarChart } from "../../interfaces/chartTypes";
 
 export const dataChart1: TBarChart[] = [
   { label: "January", data: { income: 500, expense: 300 } },

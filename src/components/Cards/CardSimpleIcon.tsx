@@ -1,5 +1,5 @@
 import { Card } from "flowbite-react";
-import { TcardSimple } from "../../types/CardTypes";
+import { TcardSimple } from "../../interfaces/CardTypes";
 
 export const CardSimpleIcon = ({
   className,

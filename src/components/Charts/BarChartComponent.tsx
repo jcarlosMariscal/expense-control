@@ -8,7 +8,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { TChartData } from "../../types/chartTypes";
+import { TChartData } from "../../interfaces/chartTypes";
 import { useTheme } from "../../hooks/useTheme";
 
 ChartJS.register(

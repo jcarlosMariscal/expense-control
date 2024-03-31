@@ -1,7 +1,7 @@
 import { Badge, Button, Card } from "flowbite-react";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { HiClock } from "react-icons/hi";
-import { TCardDashboard } from "../../types/CardTypes";
+import { TCardDashboard } from "../../interfaces/CardTypes";
 
 type TCardInfo = {
   cardData: TCardDashboard;

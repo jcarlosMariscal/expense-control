@@ -1,24 +1,26 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
 import { Button, Label, TextInput } from "flowbite-react";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { regexEmail, regexPassword } from "../../helpers/regex";
-import { AuthContext } from "../../context/AuthContext";
-import { LoginFormValues } from "../../interfaces/auth.interface";
+import { useState } from "react";
 import { alertTimer } from "../../utils/alerts";
-export const SignUpForm = () => {
-  const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
-  const { SignUpWithEmail, status, result } = authContext;
-
-  const [formValues, setFormValues] = useState<LoginFormValues>({
+// import { useNavigate } from "react-router-dom";
+import { regexEmail, regexPassword } from "../../helpers/regex";
+type FormValues = {
+  email: string;
+  password: string;
+};
+export const SignInForm = () => {
+  // const navigate = useNavigate();
+  const [formValues, setFormValues] = useState<FormValues>({
     email: "",
     password: "",
   });
   const [errEmail, setErrEmail] = useState(false);
   const [errPass, setErrPass] = useState(false);
+  const [errForm, setErrForm] = useState(false);
 
-  const errColorEmail = errEmail ? "failure" : "success";
-  const errColorPass = errPass ? "failure" : "success";
+  const errColorEmail = errEmail ? "failure" : "info";
+  const errColorPass = errPass ? "failure" : "info";
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name == "email") setErrEmail(!regexEmail.test(value));
@@ -29,22 +31,45 @@ export const SignUpForm = () => {
       [name]: value,
     }));
   };
-  const signUp = async (e: React.FormEvent) => {
+  // https://medium.com/@amamit/firebase-authentication-with-react-2ac170996ae0
+  // import { getAuth, signOut } from "firebase/auth";
+
+  // const auth = getAuth();
+  // signOut(auth)
+  //   .then(() => {
+  //     // Sign-out successful.
+  //   })
+  //   .catch((error) => {
+  //     // An error happened.
+  //   });
+
+  const SignInWithEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     const { email, password } = formValues;
+    const timer = 1500;
 
     if (!email) setErrEmail(true);
     if (!password) setErrPass(true);
 
-    SignUpWithEmail({ email, password });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-    if (result) {
-      alertTimer("Registrado", "success", 1500);
-      navigate("/login");
+      const user = userCredential.user;
+      console.log(user);
+
+      alertTimer("Sesión iniciada", "success", timer);
+      // setTimeout(() => navigate("/login"), timer);
+    } catch (error) {
+      console.log(error);
+      setErrForm(true);
     }
   };
   return (
-    <form className="flex flex-col gap-2" onSubmit={signUp}>
+    <form className=" flex flex-col gap-2" onSubmit={SignInWithEmail}>
       <div>
         <div className="mb-2 block">
           <Label htmlFor="email" color={errColorEmail} value="Email" />
@@ -88,12 +113,12 @@ export const SignUpForm = () => {
       </div>
       <Button
         type="submit"
-        color="success"
+        color="blue"
         disabled={errEmail || errPass ? true : false}
       >
         Sign Up
       </Button>
-      {status && (
+      {errForm && (
         <p className="text-red-500 text-sm">
           Parece que ha ocurrido un error al intentar registrarse. Intente de
           nuevo más tarde.
@@ -102,5 +127,3 @@ export const SignUpForm = () => {
     </form>
   );
 };
-// 119
-// const { user, signIn, signOut } = useContext(UserContext);

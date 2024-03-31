@@ -1,6 +1,6 @@
 import { Button, Table } from "flowbite-react";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { TDataTable } from "../../types/dataTables";
+import { TDataTable } from "../../interfaces/dataTables";
 
 type TTableComponent = {
   data: TDataTable[];
