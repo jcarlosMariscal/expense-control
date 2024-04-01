@@ -1,22 +1,15 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
 import { ReactNode, useEffect, useState } from "react";
 import { auth } from "../firebase/firebaseConfig";
 import { AuthContext } from "./AuthContext";
-import {
-  IAuth,
-  LoginFormValues,
-  UserFormValues,
-} from "../interfaces/auth.interface";
-import { SignIn } from "../firebase/authService";
+import { IAuth, UserFormValues } from "../interfaces/auth.interface";
 
-type TAuth = {
-  children: ReactNode;
-};
-export const AuthProvider = ({ children }: TAuth) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
@@ -52,32 +45,29 @@ export const AuthProvider = ({ children }: TAuth) => {
   };
 
   //Sign in
-  const SignInWithEmail = async (creds: LoginFormValues) => {
+  const SignInWithEmail = async ({ email, password }: UserFormValues) => {
     setIsLoading(true);
-    // SignIn(creds)
-    //   .then((userCredential) => {
-    //     const { user } = userCredential;
-    //     if (user) {
-    //       setCurrentUser(user);
-    //       //redirect user to targeted route
-    //       // navigate("/dashboard", { replace: true });
-    //       return true;
-    //     } else {
-    //       //do something }
-    //       return false;
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const user = result.user;
 
-    //       setIsLoading(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (error.code === "auth/wrong-password") {
-    //       //show error
-    //     } else if (error.code === "auth/too-many-requests") {
-    //       //show error
-    //     }
-    //     setIsLoading(false);
-    //     return false;
-    //   });
+      if (!user) {
+        setIsLoading(false);
+        setStatus(true);
+        return;
+      }
+      setStatus(false);
+      setCurrentUser(user);
+    } catch (error) {
+      console.log(error);
+      setStatus(true);
+      // if (error.code === "auth/wrong-password") {
+      //       //show error
+      //     } else if (error.code === "auth/too-many-requests") {
+      //       //show error
+      //     }
+      setIsLoading(false);
+    }
   };
 
   //Sign out

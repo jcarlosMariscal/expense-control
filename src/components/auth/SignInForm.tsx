@@ -1,111 +1,59 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/firebaseConfig";
 import { Button, Label, TextInput } from "flowbite-react";
-import { useState } from "react";
-import { alertTimer } from "../../utils/alerts";
-// import { useNavigate } from "react-router-dom";
-// import { regexEmail, regexPassword } from "../../helpers/regex";
-type FormValues = {
-  email: string;
-  password: string;
-};
+import { useContext } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { authSchema } from "../../hooks/validationForm";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { LoginFormValues as IAuth } from "../../interfaces/auth.interface";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 export const SignInForm = () => {
-  // const navigate = useNavigate();
-  const [formValues, setFormValues] = useState<FormValues>({
-    email: "",
-    password: "",
-  });
-  const [errEmail, setErrEmail] = useState(false);
-  const [errPass, setErrPass] = useState(false);
-  const [errForm, setErrForm] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IAuth>({ resolver: yupResolver(authSchema) });
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+  const { SignInWithEmail, status } = authContext;
 
-  const errColorEmail = errEmail ? "failure" : "info";
-  const errColorPass = errPass ? "failure" : "info";
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    // if (name == "email") setErrEmail(!regexEmail.test(value));
-    // if (name == "password") setErrPass(!regexPassword.test(value));
-
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  // https://medium.com/@amamit/firebase-authentication-with-react-2ac170996ae0
-  // import { getAuth, signOut } from "firebase/auth";
-
-  // const auth = getAuth();
-  // signOut(auth)
-  //   .then(() => {
-  //     // Sign-out successful.
-  //   })
-  //   .catch((error) => {
-  //     // An error happened.
-  //   });
-
-  const SignInWithEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { email, password } = formValues;
-    const timer = 1500;
-
-    if (!email) setErrEmail(true);
-    if (!password) setErrPass(true);
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      const user = userCredential.user;
-      console.log(user);
-
-      alertTimer("Sesión iniciada", "success", timer);
-      // setTimeout(() => navigate("/login"), timer);
-    } catch (error) {
-      console.log(error);
-      setErrForm(true);
-    }
+  const errEmail = errors?.email ? "failure" : "success";
+  const errPass = errors?.password ? "failure" : "success";
+  const signIn: SubmitHandler<IAuth> = (data) => {
+    const { email, password } = data;
+    SignInWithEmail({ email, password });
+    navigate("/dashboard");
   };
   return (
-    <form className=" flex flex-col gap-2" onSubmit={SignInWithEmail}>
+    <form className="flex flex-col gap-2" onSubmit={handleSubmit(signIn)}>
       <div>
-        <div className="mb-2 block">
-          <Label htmlFor="email" color={errColorEmail} value="Email" />
-        </div>
+        <Label htmlFor="email" value="Email" className="mb-2 block" />
         <TextInput
           id="email"
           placeholder="user@gmail.com"
-          required
-          color={errColorEmail}
-          name="email"
           type="email"
-          value={formValues.email}
-          onChange={handleChange}
-          helperText={<>{errEmail && <span>Correo inválido.</span>}</>}
+          color={errEmail}
+          {...register("email")}
+          helperText={
+            <>
+              {errors?.email && (
+                <span className="text-red-500">{errors.email.message}</span>
+              )}
+            </>
+          }
         />
       </div>
       <div>
-        <div className="mb-2 block">
-          <Label htmlFor="pass" color={errColorPass} value="Password" />
-        </div>
+        <Label htmlFor="pass" value="Password" className="mb-2 block" />
         <TextInput
           id="pass"
-          placeholder="password"
-          required
-          color={errColorPass}
-          name="password"
           type="password"
-          value={formValues.password}
-          onChange={handleChange}
+          color={errPass}
+          {...register("password")}
           helperText={
             <>
-              {errPass && (
-                <span>
-                  La contraseña debe tener mínimo 5 caracteres, al menos una
-                  letra y al menos un digito
-                </span>
+              {errors?.password && (
+                <span className="text-red-500">{errors.password.message}</span>
               )}
             </>
           }
@@ -113,17 +61,18 @@ export const SignInForm = () => {
       </div>
       <Button
         type="submit"
-        color="blue"
-        disabled={errEmail || errPass ? true : false}
+        color="success"
+        disabled={errors?.email || errors?.password ? true : false}
       >
-        Sign Up
+        Sign In
       </Button>
-      {errForm && (
+      {status && (
         <p className="text-red-500 text-sm">
-          Parece que ha ocurrido un error al intentar registrarse. Intente de
-          nuevo más tarde.
+          Parece que ha ocurrido un error al Iniciar sesión. Intente de nuevo
+          más tarde.
         </p>
       )}
     </form>
   );
 };
+// 130
