@@ -7,7 +7,22 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import { auth } from "../firebase/firebaseConfig";
 import { AuthContext } from "./AuthContext";
-import { IAuth, UserFormValues } from "../interfaces/auth.interface";
+import { IAuth, IAuthResponse, IUserForm } from "../interfaces/auth.interface";
+import { FirebaseError } from "firebase/app";
+
+const ERROR_MESSAGES: { [key: string]: string } = {
+  "auth/email-already-in-use": "Este correo ya está en uso. Intente con otro.",
+  "auth/invalid-email":
+    "El formato del correo electrónico no es válido. Por favor, ingresa un correo válido.",
+  "auth/operation-not-allowed":
+    "El registro con correo electrónico y contraseña no está habilitado. Por favor, contacta al soporte.",
+  "auth/weak-password":
+    "La contraseña es demasiado débil. Por favor, elige una contraseña más fuerte.",
+  "auth/user-disabled":
+    "Su cuenta ha sido deshabilitada. Por favor, contacta a soporte.",
+  "auth/invalid-credential": "El correo electrónico y contraseña no coinciden.",
+};
+let errMessage = "Ha ocurrido un error. Intente de nuevo más tarde.";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -15,58 +30,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<boolean>(false);
 
-  //Sign up
-  const SignUpWithEmail = async ({ email, password }: UserFormValues) => {
+  const SignUpWithEmail = async (form: IUserForm): Promise<IAuthResponse> => {
+    const { email, password } = form;
     setIsLoading(true);
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = result.user;
-
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const user = res.user;
       if (!user) {
         setIsLoading(false);
         setStatus(true);
-        return;
+        return { success: false, error: errMessage };
       }
       setStatus(false);
       setCurrentUser(user);
+      return { success: true };
     } catch (error) {
-      console.log(error);
+      if (error instanceof FirebaseError)
+        errMessage = ERROR_MESSAGES[error.code];
       setStatus(true);
-      // if (error.code === "auth/email-already-in-use") {
-      // } else if (error.code === "auth/too-many-requests") {
-      // }
-      // you can check for more error like email not valid or something
       setIsLoading(false);
+      return { success: false, error: errMessage };
     }
   };
 
-  //Sign in
-  const SignInWithEmail = async ({ email, password }: UserFormValues) => {
+  const SignInWithEmail = async (form: IUserForm): Promise<IAuthResponse> => {
+    const { email, password } = form;
     setIsLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const user = result.user;
-
       if (!user) {
         setIsLoading(false);
         setStatus(true);
-        return;
+        return { success: false, error: errMessage };
       }
       setStatus(false);
       setCurrentUser(user);
+      return { success: true };
     } catch (error) {
       console.log(error);
       setStatus(true);
-      // if (error.code === "auth/wrong-password") {
-      //       //show error
-      //     } else if (error.code === "auth/too-many-requests") {
-      //       //show error
-      //     }
+      if (error instanceof FirebaseError)
+        errMessage = ERROR_MESSAGES[error.code];
       setIsLoading(false);
+      return { success: false, error: errMessage };
     }
   };
 
@@ -93,7 +100,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    //onAuthStateChanged check if the user is still logged in or not
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setIsAuthLoading(false);
@@ -101,9 +107,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe;
   }, []);
 
-  //If loading for the first time when visiting the page
   if (isAuthLoading) return <div>Cargando...</div>;
   return (
     <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>
   );
 };
+// 125

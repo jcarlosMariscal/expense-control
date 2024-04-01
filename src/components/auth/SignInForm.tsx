@@ -1,28 +1,37 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { authSchema } from "../../hooks/validationForm";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { LoginFormValues as IAuth } from "../../interfaces/auth.interface";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { alertTimer } from "../../utils/alerts";
+import { IUserForm } from "../../interfaces/auth.interface";
 
 export const SignInForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IAuth>({ resolver: yupResolver(authSchema) });
+  } = useForm<IUserForm>({ resolver: yupResolver(authSchema) });
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
+  const [formError, setFormError] = useState<string>(
+    "Parece que ha ocurrido un error al intentar iniciar sesión. Intente de nuevo más tarde."
+  );
   const { SignInWithEmail, status } = authContext;
 
   const errEmail = errors?.email ? "failure" : "success";
   const errPass = errors?.password ? "failure" : "success";
-  const signIn: SubmitHandler<IAuth> = (data) => {
+  const signIn: SubmitHandler<IUserForm> = async (data) => {
     const { email, password } = data;
-    SignInWithEmail({ email, password });
-    navigate("/dashboard");
+    const { success, error } = await SignInWithEmail({ email, password });
+    if (success) {
+      navigate("/dashboard");
+      alertTimer("Sesión Iniciada", "success", 1500);
+    } else {
+      if (error !== undefined) setFormError(error);
+    }
   };
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(signIn)}>
@@ -66,12 +75,7 @@ export const SignInForm = () => {
       >
         Sign In
       </Button>
-      {status && (
-        <p className="text-red-500 text-sm">
-          Parece que ha ocurrido un error al Iniciar sesión. Intente de nuevo
-          más tarde.
-        </p>
-      )}
+      {status && <p className="text-red-500 text-sm">{formError}</p>}
     </form>
   );
 };

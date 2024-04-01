@@ -1,11 +1,10 @@
 import { User } from "firebase/auth";
-
-export interface LoginFormValues {
-  email: string;
-  password: string;
+export interface IAuthResponse {
+  success: boolean;
+  error?: string;
 }
 
-export interface UserFormValues {
+export interface IUserForm {
   email: string;
   password: string;
   // displayName: string;
@@ -14,14 +13,7 @@ export interface IAuth {
   user: User | null; //type User comes from firebase
   loading: boolean;
   status: boolean;
-  SignInWithEmail: (creds: LoginFormValues) => void;
-  SignUpWithEmail: (creds: UserFormValues) => void;
+  SignInWithEmail: (creds: IUserForm) => Promise<IAuthResponse>;
+  SignUpWithEmail: (creds: IUserForm) => Promise<IAuthResponse>;
   SignOut: () => void;
 }
-// interface IAuth {
-//   user: User; // Asume que tienes un tipo User definido en alguna parte
-//   loading: boolean;
-//   SignInWithEmail: () => void;
-//   SignUpWithEmail: () => void;
-//   SignOut: () => void;
-// }
