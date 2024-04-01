@@ -14,7 +14,6 @@ export interface IAuth {
   user: User | null; //type User comes from firebase
   loading: boolean;
   status: boolean;
-  result: boolean;
   SignInWithEmail: (creds: LoginFormValues) => void;
   SignUpWithEmail: (creds: UserFormValues) => void;
   SignOut: () => void;

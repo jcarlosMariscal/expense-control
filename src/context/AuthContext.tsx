@@ -6,7 +6,6 @@ export const AuthContext = createContext<IAuth>({
   user: auth.currentUser,
   loading: false,
   status: false,
-  result: false,
   SignInWithEmail: () => {},
   SignUpWithEmail: () => {},
   SignOut: () => {},

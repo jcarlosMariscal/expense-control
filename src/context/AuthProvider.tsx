@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }: TAuth) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<boolean>(false);
-  const [result, setResult] = useState<boolean>(false);
 
   //Sign up
   const SignUpWithEmail = async ({ email, password }: UserFormValues) => {
@@ -36,11 +35,9 @@ export const AuthProvider = ({ children }: TAuth) => {
 
       if (!user) {
         setIsLoading(false);
-        setResult(false);
         setStatus(true);
         return;
       }
-      setResult(true);
       setStatus(false);
       setCurrentUser(user);
     } catch (error) {
@@ -50,7 +47,6 @@ export const AuthProvider = ({ children }: TAuth) => {
       // } else if (error.code === "auth/too-many-requests") {
       // }
       // you can check for more error like email not valid or something
-      setResult(false);
       setIsLoading(false);
     }
   };
@@ -101,7 +97,6 @@ export const AuthProvider = ({ children }: TAuth) => {
     user: currentUser,
     loading: isLoading,
     status,
-    result,
     SignInWithEmail,
     SignUpWithEmail,
     SignOut,

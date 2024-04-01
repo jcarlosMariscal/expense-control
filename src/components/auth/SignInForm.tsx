@@ -4,7 +4,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { alertTimer } from "../../utils/alerts";
 // import { useNavigate } from "react-router-dom";
-import { regexEmail, regexPassword } from "../../helpers/regex";
+// import { regexEmail, regexPassword } from "../../helpers/regex";
 type FormValues = {
   email: string;
   password: string;
@@ -23,8 +23,8 @@ export const SignInForm = () => {
   const errColorPass = errPass ? "failure" : "info";
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name == "email") setErrEmail(!regexEmail.test(value));
-    if (name == "password") setErrPass(!regexPassword.test(value));
+    // if (name == "email") setErrEmail(!regexEmail.test(value));
+    // if (name == "password") setErrPass(!regexPassword.test(value));
 
     setFormValues((prev) => ({
       ...prev,
