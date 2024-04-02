@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
   User,
 } from "firebase/auth";
 import { ReactNode, useEffect, useState } from "react";
@@ -77,19 +78,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // export const SignOut = async () => {
+  //   await signOut(firebaseAuth);
+  // };
   //Sign out
-  const SignOut = async () => {
+  const SignOut = async (): Promise<IAuthResponse> => {
     setIsLoading(true);
     try {
-      await SignOut();
+      await signOut(auth);
       setCurrentUser(null);
+      return { success: true };
       // navigate("/signin", { replace: true });
     } catch (error) {
       setIsLoading(false);
+      return {
+        success: false,
+        error: "Ha ocurrido un error al intentar cerrar sesión.",
+      };
       //show error alert
     }
   };
-  //create Auth Values
+  //create Auth Value
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // if (user) {
+      console.log("Si hay");
+
+      setCurrentUser(user);
+      setIsAuthLoading(false);
+      // }
+    });
+    return unsubscribe;
+  }, []);
+
+  if (isAuthLoading) return <div>Cargando...</div>;
   const authValues: IAuth = {
     user: currentUser,
     loading: isLoading,
@@ -98,16 +121,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     SignUpWithEmail,
     SignOut,
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setIsAuthLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  if (isAuthLoading) return <div>Cargando...</div>;
   return (
     <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>
   );

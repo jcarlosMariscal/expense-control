@@ -12,7 +12,9 @@ export const AuthContext = createContext<IAuth>({
   SignUpWithEmail: async () => {
     return { success: false };
   },
-  SignOut: () => {},
+  SignOut: async () => {
+    return { success: false };
+  },
 });
 
 // export const AuthContext = createContext<null | IAuth>(null);

@@ -15,5 +15,5 @@ export interface IAuth {
   status: boolean;
   SignInWithEmail: (creds: IUserForm) => Promise<IAuthResponse>;
   SignUpWithEmail: (creds: IUserForm) => Promise<IAuthResponse>;
-  SignOut: () => void;
+  SignOut: () => Promise<IAuthResponse>;
 }

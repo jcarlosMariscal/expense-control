@@ -1,8 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { BgComponent } from "./BgComponent";
 import { SignInForm } from "./SignInForm";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export const SignIn = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/dashboard");
+  }, [user]);
   return (
     <BgComponent background="bg-slate-300 dark:bg-slate-900">
       <>

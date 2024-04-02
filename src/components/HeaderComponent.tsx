@@ -1,6 +1,9 @@
 import { Avatar, Button, DarkThemeToggle, Dropdown } from "flowbite-react";
 import { BiChevronDown, BiPlus } from "react-icons/bi";
 import { MenuButton } from "./Pure/MenuButton";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 type THeaderComponent = {
   toggleMenu: () => void;
@@ -9,22 +12,25 @@ type THeaderComponent = {
 const image =
   "https://www.flowbite-react.com/images/people/profile-picture-5.jpg";
 export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
+  const navigate = useNavigate();
+  const { SignOut } = useContext(AuthContext);
+  const out = async () => {
+    const { success } = await SignOut();
+    if (success) navigate("/login");
+  };
   return (
     <div className="header">
       <div className="flex items-center">
         <MenuButton handleClick={toggleMenu} />
-        {/* <div className=""> */}
         <Button
           size="xs"
           className="size-10 ssm:size-auto !flex-center"
           color="blue"
-          // gradientMonochrome="cyan"
           pill
         >
           <BiPlus className="size-6" />
           <span className="hidden ssm:block ml-2 text-sm">New</span>
         </Button>
-        {/* </div> */}
       </div>
       <div className="flex gap-2 items-center">
         <DarkThemeToggle className="btn-theme" />
@@ -42,6 +48,9 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
           )}
         >
           <Dropdown.Item>Dashboard</Dropdown.Item>
+          <Dropdown.Item>
+            <span onClick={out}>Log out</span>
+          </Dropdown.Item>
         </Dropdown>
       </div>
     </div>

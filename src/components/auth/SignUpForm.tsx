@@ -2,7 +2,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authSchema } from "../../hooks/validationForm";
 import { alertTimer } from "../../utils/alerts";
@@ -78,6 +78,7 @@ export const SignUpForm = () => {
         Sign Up
       </Button>
       {status && <p className="text-red-500 text-sm">{formError}</p>}
+      <NavLink to="/dashboard">SDS</NavLink>
     </form>
   );
 };
