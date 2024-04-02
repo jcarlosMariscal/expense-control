@@ -12,6 +12,8 @@ export const HomePage = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log(user);
+
     if (!user) navigate("/login");
   }, []);
   return (

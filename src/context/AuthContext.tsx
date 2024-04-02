@@ -1,4 +1,4 @@
-import { auth } from "../firebase/firebaseConfig";
+import { auth } from "../firebase/config";
 import { createContext } from "react";
 import { IAuth } from "../interfaces/auth.interface";
 
