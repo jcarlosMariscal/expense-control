@@ -9,6 +9,11 @@ export interface IUserForm {
   password: string;
   // displayName: string;
 }
+export interface IUserProfile {
+  name: string;
+  last_name: string;
+  picture: string;
+}
 export interface IRegisterForm {
   name: string;
   last_name: string;
@@ -18,6 +23,7 @@ export interface IRegisterForm {
 }
 export interface IAuth {
   user: User | null; //type User comes from firebase
+  userProfile: IUserProfile | null;
   loading: boolean;
   status: boolean;
   SignInWithEmail: (creds: IUserForm) => Promise<IAuthResponse>;

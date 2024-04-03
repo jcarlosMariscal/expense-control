@@ -184,7 +184,7 @@
     @apply size-full overflow-hidden relative;
   }
   .auth-container {
-    @apply w-[20rem] lg:w-[30rem] h-[30rem] rounded-md !bg-opacity-40 p-5 lg:p-10;
+    @apply w-[20rem] md:w-[28rem] lg:w-[32rem] h-auto rounded-md !bg-opacity-40 p-5 lg:p-10;
   }
 }
 @tailwind utilities;

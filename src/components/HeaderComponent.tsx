@@ -9,11 +9,10 @@ type THeaderComponent = {
   toggleMenu: () => void;
 };
 
-const image =
-  "https://www.flowbite-react.com/images/people/profile-picture-5.jpg";
 export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
   const navigate = useNavigate();
-  const { SignOut } = useContext(AuthContext);
+  const { SignOut, userProfile } = useContext(AuthContext);
+
   const out = async () => {
     const { success } = await SignOut();
     if (success) navigate("/auth/login");
@@ -39,8 +38,15 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
           dismissOnClick={true}
           renderTrigger={() => (
             <div className="avatar-dropdown">
-              <Avatar img={image} rounded className="img-avatar" size="sm" />
-              <span className="hidden ssm:block ml-1">User</span>
+              <Avatar
+                img={userProfile?.picture}
+                rounded
+                className="img-avatar"
+                size="sm"
+              />
+              <span className="hidden ssm:block ml-1">
+                {userProfile?.name} {userProfile?.last_name}
+              </span>
               <span className="text-xl">
                 <BiChevronDown />
               </span>

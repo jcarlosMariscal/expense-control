@@ -4,6 +4,7 @@ import { IAuth } from "../interfaces/auth.interface";
 
 export const AuthContext = createContext<IAuth>({
   user: auth.currentUser,
+  userProfile: null,
   loading: false,
   status: false,
   SignInWithEmail: async () => {

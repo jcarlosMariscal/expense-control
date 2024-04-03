@@ -2,10 +2,10 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../hooks/validationForm";
-import { alertTimer } from "../../utils/alerts";
+// import { alertTimer } from "../../utils/alerts";
 import { IRegisterForm } from "../../interfaces/auth.interface";
 export const SignUpForm = () => {
   const {
@@ -13,7 +13,7 @@ export const SignUpForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IRegisterForm>({ resolver: yupResolver(registerSchema) });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const [formError, setFormError] = useState<string>(
     "Parece que ha ocurrido un error al intentar registrarse. Intente de más tarde."
@@ -31,8 +31,8 @@ export const SignUpForm = () => {
       password,
     });
     if (success) {
-      navigate("/login");
-      alertTimer("Registro correcto", "success", 1500);
+      // navigate("/login");
+      // alertTimer("Registro correcto", "success", 1500);
     } else {
       if (error !== undefined) setFormError(error);
     }
