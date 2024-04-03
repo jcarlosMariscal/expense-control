@@ -21,8 +21,8 @@ export const SignInForm = () => {
   );
   const { SignInWithEmail, status } = authContext;
 
-  const errEmail = errors?.email ? "failure" : "success";
-  const errPass = errors?.password ? "failure" : "success";
+  const errEmail = errors?.email ? "failure" : "info";
+  const errPass = errors?.password ? "failure" : "info";
   const signIn: SubmitHandler<IUserForm> = async (data) => {
     const { email, password } = data;
     const { success, error } = await SignInWithEmail({ email, password });
@@ -70,7 +70,7 @@ export const SignInForm = () => {
       </div>
       <Button
         type="submit"
-        color="success"
+        color="blue"
         disabled={errors?.email || errors?.password ? true : false}
       >
         Sign In

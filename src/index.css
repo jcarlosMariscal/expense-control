@@ -2,25 +2,6 @@
 @tailwind components;
 
 @layer components {
-  /* AUTH PAGE ANIMATE */
-  .bg-image div {
-    background-image: radial-gradient(
-      rgb(2 6 23),
-      hsl(229, 84%, 5%) 10%,
-      rgba(0, 255, 255, 0) 56%
-    );
-  }
-  .bg-image-dark div {
-    background-image: radial-gradient(
-      #9ff,
-      #9ff 10%,
-      rgba(233, 240, 240, 0) 56%
-    );
-  }
-  .container-animation {
-    @apply size-full overflow-hidden relative;
-  }
-  /* AUTH PAGE ANIMATE */
   .border-light {
     @apply border-slate-950 border-opacity-20;
   }
@@ -182,6 +163,28 @@
   }
   /* ------------------- INCOME PAGE --------------------  */
   .content-full {
+  }
+
+  /* ------------------- AUTH PAGES --------------------  */
+  .bg-image div {
+    background-image: radial-gradient(
+      rgb(2 6 23),
+      hsl(229, 84%, 5%) 10%,
+      rgba(0, 255, 255, 0) 56%
+    );
+  }
+  .bg-image-dark div {
+    background-image: radial-gradient(
+      #9ff,
+      #9ff 10%,
+      rgba(233, 240, 240, 0) 56%
+    );
+  }
+  .container-animation {
+    @apply size-full overflow-hidden relative;
+  }
+  .auth-container {
+    @apply w-[20rem] lg:w-[30rem] h-[30rem] rounded-md !bg-opacity-40 p-5 lg:p-10;
   }
 }
 @tailwind utilities;

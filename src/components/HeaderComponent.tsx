@@ -16,7 +16,7 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
   const { SignOut } = useContext(AuthContext);
   const out = async () => {
     const { success } = await SignOut();
-    if (success) navigate("/login");
+    if (success) navigate("/auth/login");
   };
   return (
     <div className="header">

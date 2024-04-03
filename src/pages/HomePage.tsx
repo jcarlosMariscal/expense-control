@@ -14,7 +14,7 @@ export const HomePage = () => {
   useEffect(() => {
     console.log(user);
 
-    if (!user) navigate("/login");
+    if (!user) navigate("/auth/login");
   }, []);
   return (
     <>
@@ -29,7 +29,7 @@ export const HomePage = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-900 h-screen flex-center"></div>
+        <div className="color-bg-primary h-screen flex-center"></div>
       )}
     </>
   );

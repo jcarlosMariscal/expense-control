@@ -12,6 +12,7 @@ import { SettingPage } from "../pages/SettingPage";
 import { CategoriesPage } from "../pages/CategoriesPage";
 import { SignUp } from "../components/auth/SignUp";
 import { SignIn } from "../components/auth/SignIn";
+import { AuthPage } from "../pages/AuthPage";
 export const AppRouter = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,8 +25,11 @@ export const AppRouter = () => {
           <Route path="setting" element={<SettingPage />}></Route>
           <Route path="categories" element={<CategoriesPage />}></Route>
         </Route>
-        <Route path="/register" element={<SignUp />}></Route>
-        <Route path="/login" element={<SignIn />}></Route>
+        <Route path="auth/" element={<AuthPage />}>
+          <Route index element={<SignIn />}></Route>
+          <Route path="login" element={<SignIn />}></Route>
+          <Route path="register" element={<SignUp />}></Route>
+        </Route>
       </>
     )
   );

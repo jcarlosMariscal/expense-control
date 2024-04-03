@@ -2,17 +2,17 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { authSchema } from "../../hooks/validationForm";
+import { registerSchema } from "../../hooks/validationForm";
 import { alertTimer } from "../../utils/alerts";
-import { IUserForm } from "../../interfaces/auth.interface";
+import { IRegisterForm } from "../../interfaces/auth.interface";
 export const SignUpForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUserForm>({ resolver: yupResolver(authSchema) });
+  } = useForm<IRegisterForm>({ resolver: yupResolver(registerSchema) });
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const [formError, setFormError] = useState<string>(
@@ -22,9 +22,11 @@ export const SignUpForm = () => {
 
   const errEmail = errors?.email ? "failure" : "success";
   const errPass = errors?.password ? "failure" : "success";
-  const signUp: SubmitHandler<IUserForm> = async (data) => {
-    const { email, password } = data;
+  const signUp: SubmitHandler<IRegisterForm> = async (data) => {
+    const { name, last_name, email, password } = data;
     const { success, error } = await SignUpWithEmail({
+      name,
+      last_name,
       email,
       password,
     });
@@ -37,6 +39,26 @@ export const SignUpForm = () => {
   };
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(signUp)}>
+      <div>
+        <Label htmlFor="name" value="Name" className="mb-2 block" />
+        <TextInput
+          id="name"
+          placeholder="User"
+          type="text"
+          color={errEmail}
+          {...register("name")}
+        />
+      </div>
+      <div>
+        <Label htmlFor="last_name" value="Last Name" className="mb-2 block" />
+        <TextInput
+          id="last_name"
+          placeholder="Last name"
+          type="text"
+          color={errEmail}
+          {...register("last_name")}
+        />
+      </div>
       <div>
         <Label htmlFor="email" value="Email" className="mb-2 block" />
         <TextInput
@@ -78,7 +100,6 @@ export const SignUpForm = () => {
         Sign Up
       </Button>
       {status && <p className="text-red-500 text-sm">{formError}</p>}
-      <NavLink to="/dashboard">SDS</NavLink>
     </form>
   );
 };
