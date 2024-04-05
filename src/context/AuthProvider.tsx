@@ -19,7 +19,14 @@ import { FirebaseError } from "firebase/app";
 import { Spinner } from "flowbite-react";
 import { ERROR_MESSAGES } from "../utils/authErrors";
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+} from "firebase/firestore";
 
 let errMessage = "Ha ocurrido un error. Intente de nuevo más tarde.";
 
@@ -40,6 +47,63 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       return false;
     }
+  };
+  interface TCategory {
+    id?: string;
+    name: string;
+    description: string;
+    color: string;
+    icon: string;
+  }
+  const getAllCategories = async (
+    nameCollection: string
+  ): Promise<TCategory[] | boolean> => {
+    const q = query(
+      collection(db, nameCollection, "categories_default", "categories")
+    );
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const categories = querySnapshot.docs.map((doc) => {
+        const data = doc.data() as TCategory;
+        return { id: doc.id, ...data };
+      });
+      return categories;
+    } else {
+      return false;
+    }
+  };
+  const createCategoriesForUser = async (uid: string): Promise<boolean> => {
+    const categoriesExpense = await getAllCategories("categories_expense");
+    const categoriesIncome = await getAllCategories("categories_income");
+    if (!categoriesExpense || !categoriesIncome) return false;
+    // const userCategoriesExp = collection(db,"categories_expense",uid,"categories");
+    if (Array.isArray(categoriesExpense) && Array.isArray(categoriesIncome)) {
+      categoriesExpense.forEach(async (category: TCategory) => {
+        const { id, name, description, color, icon } = category;
+        // await addDoc(userCategoriesExp, { name, description, color, icon });
+        if (id) {
+          await setDoc(doc(db, "categories_expense", uid, "categories", id), {
+            name,
+            description,
+            color,
+            icon,
+          });
+        }
+      });
+      categoriesIncome.forEach(async (category: TCategory) => {
+        const { id, name, description, color, icon } = category;
+        if (id) {
+          await setDoc(doc(db, "categories_income", uid, "categories", id), {
+            name,
+            description,
+            color,
+            icon,
+          });
+        }
+      });
+    }
+
+    return true;
   };
 
   const SignUpWithEmail = async (
@@ -63,6 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         picture:
           "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
       });
+      createCategoriesForUser(user.uid);
       return { success: true };
     } catch (error) {
       if (error instanceof FirebaseError)
