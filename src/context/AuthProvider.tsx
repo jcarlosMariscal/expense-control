@@ -6,11 +6,10 @@ import {
   User,
 } from "firebase/auth";
 import { ReactNode, useEffect, useState } from "react";
-import { auth, db } from "../firebase/config";
+import { auth } from "../firebase/config";
 import { AuthContext } from "./AuthContext";
 import {
   IAuth,
-  IAuthResponse,
   IRegisterForm,
   IUserForm,
   IUserProfile,
@@ -18,12 +17,12 @@ import {
 import { FirebaseError } from "firebase/app";
 import { Spinner } from "flowbite-react";
 import { ERROR_MESSAGES } from "../utils/authErrors";
-
-import { doc, setDoc } from "firebase/firestore";
 import {
   createCategoriesForUser,
+  createUserProfile,
   getUserProfile,
 } from "../firebase/firestore.service";
+import { Response } from "../interfaces/collections.interface";
 
 let errMessage = "Ha ocurrido un error. Intente de nuevo más tarde.";
 
@@ -34,9 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<boolean>(false);
 
-  const SignUpWithEmail = async (
-    form: IRegisterForm
-  ): Promise<IAuthResponse> => {
+  const SignUpWithEmail = async (form: IRegisterForm): Promise<Response> => {
     const { name, last_name, email, password } = form;
     setIsLoading(true);
     try {
@@ -45,11 +42,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!user) {
         setIsLoading(false);
         setStatus(true);
-        return { success: false, error: errMessage };
+        return { success: false, message: errMessage };
       }
       setStatus(false);
       setCurrentUser(user);
-      await setDoc(doc(db, "users", user.uid), {
+      await createUserProfile(user.uid, {
         name,
         last_name,
         picture:
@@ -62,11 +59,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         errMessage = ERROR_MESSAGES[error.code];
       setStatus(true);
       setIsLoading(false);
-      return { success: false, error: errMessage };
+      return { success: false, message: errMessage };
     }
   };
 
-  const SignInWithEmail = async (form: IUserForm): Promise<IAuthResponse> => {
+  const SignInWithEmail = async (form: IUserForm): Promise<Response> => {
     const { email, password } = form;
     setIsLoading(true);
     try {
@@ -75,26 +72,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!user) {
         setIsLoading(false);
         setStatus(true);
-        return { success: false, error: errMessage };
+        return { success: false, message: errMessage };
       }
       setStatus(false);
       setCurrentUser(user);
-      const getUser = (await getUserProfile(user.uid)) as IUserProfile;
-      if (!getUser) {
-        return { success: false, error: "No such document!" };
+      const { data } = await getUserProfile(user.uid);
+      if (!data) {
+        return { success: false, message: "No such document!" };
       }
-      setUserProfile(getUser);
+      setUserProfile(data);
       return { success: true };
     } catch (error) {
       setStatus(true);
       if (error instanceof FirebaseError)
         errMessage = ERROR_MESSAGES[error.code];
       setIsLoading(false);
-      return { success: false, error: errMessage };
+      return { success: false, message: errMessage };
     }
   };
 
-  const SignOut = async (): Promise<IAuthResponse> => {
+  const SignOut = async (): Promise<Response> => {
     setIsLoading(true);
     try {
       await signOut(auth);
@@ -104,7 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
       return {
         success: false,
-        error: "Ha ocurrido un error al intentar cerrar sesión.",
+        message: "Ha ocurrido un error al intentar cerrar sesión.",
       };
     }
   };

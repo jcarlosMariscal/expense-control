@@ -8,24 +8,24 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 import { IUserProfile } from "../interfaces/auth.interface";
-import { TCategory } from "../interfaces/collections.interface";
+import { Response, TCategory } from "../interfaces/collections.interface";
 
 export const getUserProfile = async (
   uid: string
-): Promise<IUserProfile | boolean> => {
+): Promise<Response<IUserProfile>> => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    const userData = docSnap.data() as IUserProfile;
-    return userData;
+    const data = docSnap.data() as IUserProfile;
+    return { success: true, message: "Datos obtenidos.", data };
   } else {
-    return false;
+    return { success: false, message: "Error al obtener datos." };
   }
 };
 
 export const getAllCategories = async (
   name: string
-): Promise<TCategory[] | boolean> => {
+): Promise<Response<TCategory[]>> => {
   const q = query(collection(db, name, "categories_default", "categories"));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
@@ -33,22 +33,21 @@ export const getAllCategories = async (
       const data = doc.data() as TCategory;
       return { id: doc.id, ...data };
     });
-    return categories;
+    return { success: true, message: "Datos obtenidos.", data: categories };
   } else {
-    return false;
+    return { success: false, message: "Error al obtener datos." };
   }
 };
 
 export const createUserProfile = async (
   uid: string,
   user: IUserProfile
-): Promise<boolean> => {
+): Promise<Response> => {
   try {
     await setDoc(doc(db, "users", uid), user);
-    return true;
+    return { success: true, message: "Creación correcta" };
   } catch (error) {
-    console.log(error);
-    return false;
+    return { success: false, message: "Error en creación." };
   }
 };
 export const createCategory = async (
@@ -56,55 +55,52 @@ export const createCategory = async (
   uid: string,
   id: string,
   category: TCategory
-): Promise<boolean> => {
+): Promise<Response> => {
   try {
     await setDoc(doc(db, collection, uid, "categories", id), category);
-    return true;
+    return { success: true, message: "Creación correcta" };
   } catch (error) {
-    console.log(error);
-    return false;
+    return { success: false, message: "Error en creación." };
   }
 };
 export const createCategories = async (
   categories: TCategory[],
   collection: string,
   uid: string
-): Promise<boolean> => {
+): Promise<Response> => {
   const tasks = categories.map(async (category: TCategory) => {
     const { id, ...categoryData } = category;
     if (id) {
-      return createCategory(collection, uid, id, categoryData);
+      return (await createCategory(collection, uid, id, categoryData)).data;
     }
   });
   try {
     await Promise.all(tasks);
-    return true;
+    return { success: true, message: "Creación múltiple correcta" };
   } catch (error) {
     console.log(error);
-    return false;
+    return { success: false, message: "Creación múltiple fallida" };
   }
 };
 export const createCategoriesForUser = async (
   uid: string
-): Promise<boolean> => {
-  const catExpense = await getAllCategories("categories_expense");
-  const catIncome = await getAllCategories("categories_income");
-  if (!catExpense || !catIncome) return false;
+): Promise<Response> => {
+  const catExp = "categories_expense";
+  const catInc = "categories_income";
+  const catExpense = await getAllCategories(catExp);
+  const catIncome = await getAllCategories(catInc);
+  if (!catExpense.success || !catIncome.success)
+    return { success: false, message: "No arreglos" };
   let res: boolean = false;
-  if (Array.isArray(catExpense) && Array.isArray(catIncome)) {
-    const createCatExp = await createCategories(
-      catExpense,
-      "categories_expense",
-      uid
-    );
-    const createCatInc = await createCategories(
-      catExpense,
-      "categories_income",
-      uid
-    );
+  if (Array.isArray(catExpense.data) && Array.isArray(catIncome.data)) {
+    const createCatExp = await createCategories(catExpense.data, catExp, uid);
+    const createCatInc = await createCategories(catExpense.data, catInc, uid);
     if (!createCatExp || !createCatInc) res = false;
     res = true;
   }
-  return res;
+  return {
+    success: res,
+    message: res ? "Categorias creadas" : "Crecion fallida",
+  };
 };
 // 79
