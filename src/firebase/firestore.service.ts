@@ -24,9 +24,10 @@ export const getUserProfile = async (
 };
 
 export const getAllCategories = async (
-  name: string
+  collecName: string,
+  document: string
 ): Promise<Response<TCategory[]>> => {
-  const q = query(collection(db, name, "categories_default", "categories"));
+  const q = query(collection(db, collecName, document, "categories"));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
     const categories = querySnapshot.docs.map((doc) => {
@@ -87,8 +88,8 @@ export const createCategoriesForUser = async (
 ): Promise<Response> => {
   const catExp = "categories_expense";
   const catInc = "categories_income";
-  const catExpense = await getAllCategories(catExp);
-  const catIncome = await getAllCategories(catInc);
+  const catExpense = await getAllCategories(catExp, "categories_default");
+  const catIncome = await getAllCategories(catInc, "categories_default");
   if (!catExpense.success || !catIncome.success)
     return { success: false, message: "No arreglos" };
   let res: boolean = false;

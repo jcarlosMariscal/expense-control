@@ -1,10 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  User,
-} from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { ReactNode, useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { AuthContext } from "./AuthContext";
@@ -23,8 +17,10 @@ import {
   getUserProfile,
 } from "../firebase/firestore.service";
 import { Response } from "../interfaces/collections.interface";
+import { signIn, signUp } from "../firebase/firebase.service";
 
 let errMessage = "Ha ocurrido un error. Intente de nuevo más tarde.";
+const picture = "https://cdn-icons-png.flaticon.com/512/3541/3541871.png";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -37,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { name, last_name, email, password } = form;
     setIsLoading(true);
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const res = await signUp(email, password);
       const user = res.user;
       if (!user) {
         setIsLoading(false);
@@ -46,12 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       setStatus(false);
       setCurrentUser(user);
-      await createUserProfile(user.uid, {
-        name,
-        last_name,
-        picture:
-          "https://www.shareicon.net/data/512x512/2016/09/15/829452_user_512x512.png",
-      });
+      const profile = { name, last_name, picture };
+      await createUserProfile(user.uid, profile);
       createCategoriesForUser(user.uid);
       return { success: true };
     } catch (error) {
@@ -64,10 +56,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const SignInWithEmail = async (form: IUserForm): Promise<Response> => {
-    const { email, password } = form;
     setIsLoading(true);
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
+      const result = await signIn(form);
       const user = result.user;
       if (!user) {
         setIsLoading(false);
@@ -77,11 +68,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setStatus(false);
       setCurrentUser(user);
       const { data } = await getUserProfile(user.uid);
-      if (!data) {
-        return { success: false, message: "No such document!" };
-      }
+      if (!data) return { success: false, message: "No such document!" };
       setUserProfile(data);
-      return { success: true };
+      return { success: true, message: "SignIn Correct" };
     } catch (error) {
       setStatus(true);
       if (error instanceof FirebaseError)
@@ -99,10 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: true };
     } catch (error) {
       setIsLoading(false);
-      return {
-        success: false,
-        message: "Ha ocurrido un error al intentar cerrar sesión.",
-      };
+      return { success: false, message: "Error en SignOut" };
     }
   };
 
@@ -110,19 +96,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       setIsAuthLoading(false);
-      if (user !== null) await getUserProfile(user.uid);
+      if (user) {
+        const { data } = await getUserProfile(user.uid);
+        if (!data) return { success: false, message: "No such document!" };
+        setUserProfile(data);
+      }
     });
     return unsubscribe;
   }, []);
 
   if (isAuthLoading)
     return (
-      <div className="color-bg-primary color-text h-screen flex-center flex-col gap-4">
-        <Spinner aria-label="Extra large spinner example" size="xl" />
-        <p>Loading...</p>
+      <div className="color-bg-primary h-screen flex-center">
+        <Spinner aria-label="Spinner" size="xl" />
       </div>
     );
-  const authValues: IAuth = {
+  const values: IAuth = {
     user: currentUser,
     userProfile,
     loading: isLoading,
@@ -131,8 +120,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     SignUpWithEmail,
     SignOut,
   };
-  return (
-    <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
-// 213
