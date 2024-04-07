@@ -95,7 +95,7 @@ export const createCategoriesForUser = async (
   let res: boolean = false;
   if (Array.isArray(catExpense.data) && Array.isArray(catIncome.data)) {
     const createCatExp = await createCategories(catExpense.data, catExp, uid);
-    const createCatInc = await createCategories(catExpense.data, catInc, uid);
+    const createCatInc = await createCategories(catIncome.data, catInc, uid);
     if (!createCatExp || !createCatInc) res = false;
     res = true;
   }

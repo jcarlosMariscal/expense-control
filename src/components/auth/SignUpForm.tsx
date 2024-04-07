@@ -31,7 +31,7 @@ export const SignUpForm = () => {
       password,
     });
     if (success) {
-      navigate("/login");
+      navigate("/dashboard");
       alertTimer("Registro correcto", "success", 1500);
     } else {
       if (error !== undefined) setFormError(error);

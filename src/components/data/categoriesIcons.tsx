@@ -1,0 +1,57 @@
+import { BiHomeAlt, BiSolidCat } from "react-icons/bi";
+import {
+  FaBookOpen,
+  FaBriefcase,
+  FaChalkboardTeacher,
+  FaCoffee,
+  FaDumbbell,
+  FaGift,
+  FaHeart,
+  FaMobileAlt,
+  FaMoneyBill,
+  FaMusic,
+  FaPaintBrush,
+  FaPalette,
+  FaPlane,
+  FaSadTear,
+  FaSmile,
+  FaSun,
+  FaUsers,
+} from "react-icons/fa";
+import {
+  GiAchievement,
+  GiBrain,
+  GiCrystalEarrings,
+  GiPathDistance,
+  GiTreeBeehive,
+} from "react-icons/gi";
+
+const icons = {
+  work: <FaBriefcase size={24} />,
+  finance: <FaMoneyBill size={24} />,
+  family: <FaUsers size={24} />,
+  pets: <BiSolidCat size={24} />,
+  gifts: <FaGift size={24} />,
+  technology: <FaMobileAlt size={24} />,
+  mentalHealth: <GiBrain size={24} />,
+  home: <BiHomeAlt size={24} />,
+  exercise: <FaDumbbell size={24} />,
+  art: <FaPalette size={24} />,
+  dates: <FaHeart size={24} />,
+  coffee: <FaCoffee size={24} />,
+  nature: <GiTreeBeehive size={24} />,
+  love: <FaHeart size={24} />,
+  music: <FaMusic size={24} />,
+  reading: <FaBookOpen size={24} />,
+  travel: <FaPlane size={24} />,
+  fun: <FaSmile size={24} />,
+  relaxation: <FaSun size={24} />,
+  sadness: <FaSadTear size={24} />,
+  creativity: <FaPaintBrush size={24} />,
+  adventure: <GiPathDistance size={24} />,
+  emotions: <GiCrystalEarrings size={24} />,
+  learning: <FaChalkboardTeacher size={24} />,
+  tasks: <GiAchievement size={24} />,
+};
+
+export default icons;

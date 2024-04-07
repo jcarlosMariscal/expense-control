@@ -1,3 +1,6 @@
+import { colors } from "../components/data/categoriesColor";
+import icons from "../components/data/categoriesIcons";
+
 export interface Response<IData = undefined> {
   success: boolean;
   data?: IData;
@@ -8,8 +11,8 @@ export interface TCategory {
   id?: string;
   name: string;
   description: string;
-  color: string;
-  icon: string;
+  color: keyof typeof colors;
+  icon: keyof typeof icons;
 }
 
 // ----------------- PARAMS METHODS ------------------------------
