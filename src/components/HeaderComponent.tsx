@@ -24,11 +24,11 @@ export const HeaderComponent = ({ toggleMenu }: THeaderComponent) => {
         <Button
           size="xs"
           className="size-10 ssm:size-auto !flex-center"
-          color="blue"
+          color="teal"
           pill
         >
-          <BiPlus className="size-6" />
-          <span className="hidden ssm:block ml-2 text-sm">New</span>
+          <span className="hidden ssm:block mr-2 text-sm">New</span>
+          <BiPlus className="size-5" />
         </Button>
       </div>
       <div className="flex gap-2 items-center">

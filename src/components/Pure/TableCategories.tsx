@@ -6,9 +6,10 @@ import icons from "../data/categoriesIcons";
 
 type TTableComponent = {
   data: TCategory[] | undefined;
+  bg: string;
 };
 
-export const TableCategories = ({ data }: TTableComponent) => {
+export const TableCategories = ({ data, bg }: TTableComponent) => {
   const categoryColor = (color: keyof typeof colors) => {
     const colorCategory: keyof typeof colors = color;
     const category = colors[colorCategory];
@@ -16,21 +17,26 @@ export const TableCategories = ({ data }: TTableComponent) => {
   };
   const categoryIcon = (icon: keyof typeof icons) => {
     const Icono = icons[icon];
-    console.log(icon);
     return Icono;
   };
+  const bgTable =
+    bg === "lime"
+      ? "bg-lime-300 dark:bg-lime-600 dark:text-white"
+      : "bg-yellow-300 dark:bg-yellow-600 dark:text-white";
   return (
     <div className="overflow-x-auto w-full">
       <Table>
         <Table.Head>
-          <Table.HeadCell>Name</Table.HeadCell>
-          <Table.HeadCell>Icon</Table.HeadCell>
-          <Table.HeadCell className="flex justify-center">Color</Table.HeadCell>
-          <Table.HeadCell className="w-20">
+          <Table.HeadCell className={`${bgTable}`}>Name</Table.HeadCell>
+          <Table.HeadCell className={`${bgTable}`}>Icon</Table.HeadCell>
+          <Table.HeadCell className={`${bgTable} flex justify-center`}>
+            Color
+          </Table.HeadCell>
+          <Table.HeadCell className={`${bgTable} w-20`}>
             <span className="sr-only">Actions</span>
           </Table.HeadCell>
         </Table.Head>
-        <Table.Body className="divide-y">
+        <Table.Body className="divide-y b">
           {data &&
             data.map((item, index: number) => (
               <Table.Row key={index} className="color-bg-primary color-text">
@@ -43,21 +49,16 @@ export const TableCategories = ({ data }: TTableComponent) => {
                 </Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-2">
-                    <Button
-                      pill
-                      size="xs"
-                      className="p-0 size-8"
-                      color="success"
-                    >
-                      <BiEdit size={22} />
+                    <Button pill size="xs" className="p-0 size-8" color={bg}>
+                      <BiEdit size={18} />
                     </Button>
                     <Button
                       pill
                       size="xs"
                       className="p-0 size-8"
-                      color="warning"
+                      color="failure"
                     >
-                      <BiTrash size={22} />
+                      <BiTrash size={18} />
                     </Button>
                   </div>
                 </Table.Cell>

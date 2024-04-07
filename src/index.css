@@ -145,7 +145,7 @@
     @apply flex justify-center;
   }
   .table-color span {
-    @apply size-8 rounded-full flex-center text-white;
+    @apply size-6 rounded-full flex-center text-white;
   }
 
   /* ------------------- DASHBOARD PAGE --------------------  */
@@ -185,6 +185,14 @@
   }
   .auth-container {
     @apply w-[20rem] md:w-[28rem] lg:w-[32rem] h-auto rounded-md !bg-opacity-40 p-5 lg:p-10;
+  }
+
+  /* ------------------ CATEGORY PAGE ------------------- */
+  .bg-expense {
+    @apply bg-red-600;
+  }
+  .bg-income {
+    @apply bg-green-600;
   }
 }
 @tailwind utilities;
