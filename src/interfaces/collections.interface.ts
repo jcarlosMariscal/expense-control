@@ -7,7 +7,7 @@ export interface Response<IData = undefined> {
   message?: string;
 }
 // ----------------- COLLECTIONS ------------------------------
-export interface TCategory {
+export interface ICategory {
   id?: string;
   name: string;
   description: string;

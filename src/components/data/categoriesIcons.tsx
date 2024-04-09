@@ -52,6 +52,6 @@ const icons = {
   emotions: <GiCrystalEarrings size={24} />,
   learning: <FaChalkboardTeacher size={24} />,
   tasks: <GiAchievement size={24} />,
-};
+} as const;
 
 export default icons;

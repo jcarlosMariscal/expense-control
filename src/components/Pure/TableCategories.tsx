@@ -19,7 +19,7 @@ export const TableCategories = ({ data, bg }: TTableComponent) => {
     const Icono = icons[icon];
     return Icono;
   };
-  const bgTable =
+  const background =
     bg === "lime"
       ? "bg-lime-300 dark:bg-lime-600 dark:text-white"
       : "bg-yellow-300 dark:bg-yellow-600 dark:text-white";
@@ -27,12 +27,12 @@ export const TableCategories = ({ data, bg }: TTableComponent) => {
     <div className="overflow-x-auto w-full">
       <Table>
         <Table.Head>
-          <Table.HeadCell className={`${bgTable}`}>Name</Table.HeadCell>
-          <Table.HeadCell className={`${bgTable}`}>Icon</Table.HeadCell>
-          <Table.HeadCell className={`${bgTable} flex justify-center`}>
+          <Table.HeadCell className={`${background}`}>Name</Table.HeadCell>
+          <Table.HeadCell className={`${background}`}>Icon</Table.HeadCell>
+          <Table.HeadCell className={`${background} flex justify-center`}>
             Color
           </Table.HeadCell>
-          <Table.HeadCell className={`${bgTable} w-20`}>
+          <Table.HeadCell className={`${background} w-20`}>
             <span className="sr-only">Actions</span>
           </Table.HeadCell>
         </Table.Head>
@@ -52,12 +52,7 @@ export const TableCategories = ({ data, bg }: TTableComponent) => {
                     <Button pill size="xs" className="p-0 size-8" color={bg}>
                       <BiEdit size={18} />
                     </Button>
-                    <Button
-                      pill
-                      size="xs"
-                      className="p-0 size-8"
-                      color="failure"
-                    >
+                    <Button pill size="xs" className="p-0 size-8" color="red">
                       <BiTrash size={18} />
                     </Button>
                   </div>

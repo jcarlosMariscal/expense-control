@@ -124,4 +124,4 @@ export const colors = {
     light: "#F4A460",
   },
   // Puedes agregar más colores según sea necesario
-};
+} as const;

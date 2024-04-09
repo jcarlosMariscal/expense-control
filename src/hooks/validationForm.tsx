@@ -1,10 +1,13 @@
 import * as yup from "yup";
+import { colors } from "../components/data/categoriesColor";
+import icons from "../components/data/categoriesIcons";
 const authMessages = {
   req: "Este campo es obligatorio",
-  name: "Debes introducir una nombre",
+  name: "Debes introducir un nombre",
   last_name: "Debes introducir apellidos",
   mail: "Debes introducir una dirección correcta",
   pass: "La contraseña debe tener mínimo 6 caracteres, al menos una letra y al menos un digito",
+  select: "Debe completar el campo de selección para continuar.",
 };
 export const authSchema = yup
   .object()
@@ -28,5 +31,23 @@ export const registerSchema = yup
       .min(6, authMessages.pass)
       .required(authMessages.req)
       .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, authMessages.pass),
+  })
+  .required();
+export const categorySchema = yup
+  .object()
+  .shape({
+    id: yup.string(),
+    name: yup.string().required(authMessages.req),
+    description: yup.string().required(authMessages.req),
+    color: yup
+      .mixed()
+      .oneOf(Object.keys(colors), "Selecciona un color")
+      .required(authMessages.select),
+    icon: yup
+      .mixed()
+      .oneOf(Object.keys(icons), "Selecciona un icono")
+      .required(authMessages.select),
+    // color: yup.string().required(authMessages.select),
+    // icon: yup.string().required(authMessages.select),
   })
   .required();
