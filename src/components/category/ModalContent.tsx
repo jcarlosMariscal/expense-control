@@ -22,7 +22,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
   const [openModalIcon, setOpenModalIcon] = useState(false);
   const [selectedColor, setSelectedColor] =
     useState<keyof typeof colors>("blue");
-  const [selectedIcon, setSelectedIcon] = useState<keyof typeof icons>("work");
+  const [selectedIcon, setSelectedIcon] = useState<keyof typeof icons>("bus");
   const errName = errors?.name ? "failure" : "success";
   console.log(errName);
 
@@ -112,7 +112,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
               className={`size-10`}
               style={{
                 background: colors[selectedColor].strong,
-                // color: colors[selectedColor].strong,
+                color: colors[selectedColor].light,
               }}
               onClick={() => setOpenModalIcon(true)}
             >
@@ -122,7 +122,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
               className="color-text cursor-pointer"
               onClick={() => setOpenModalIcon(true)}
             >
-              Select a color
+              Select an icon
             </span>
           </div>
         </div>
@@ -170,7 +170,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
         size="sm"
         className="bg-transparent"
       >
-        <div className="flex flex-wrap  gap-1">
+        <div className="flex flex-wrap gap-1 h-[12.5rem]">
           {Object.entries(icons).map(([iconName, iconComponent]) => (
             <div
               key={iconName}
