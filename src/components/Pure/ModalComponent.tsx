@@ -5,33 +5,49 @@ type TModalComponent = {
     openModal: boolean;
     setOpenModal: (param: boolean) => void;
   };
-  title: string;
+  title?: string;
   children: ReactNode;
-  footer: boolean;
-  btnText: string | boolean;
-  handleClick: () => void;
-  color: string;
+  footer?: boolean;
+  header?: boolean;
+  btnText?: string | boolean;
+  handleClick?: () => void;
+  color?: string;
+  dismissible?: boolean;
+  size?: string;
+  className?: string;
 };
 
 export const ModalComponent = ({
   controlsModal,
   title,
   children,
-  footer,
+  footer = true,
+  header = true,
   btnText,
   handleClick,
   color,
+  dismissible = false,
+  size = "2xl",
+  className = "",
 }: TModalComponent) => {
   const { openModal, setOpenModal } = controlsModal;
   return (
-    <Modal show={openModal} onClose={() => setOpenModal(false)}>
-      <Modal.Header>{title}</Modal.Header>
+    <Modal
+      dismissible={dismissible}
+      show={openModal}
+      size={size}
+      onClose={() => setOpenModal(false)}
+      className={className}
+    >
+      {header && <Modal.Header>{title || "Modal Component"}</Modal.Header>}
       <Modal.Body>{children}</Modal.Body>
       {footer && (
         <Modal.Footer>
-          <Button color={color} pill onClick={() => handleClick()}>
-            {btnText}
-          </Button>
+          {handleClick && (
+            <Button color={color} pill onClick={() => handleClick()}>
+              {btnText || "Button"}
+            </Button>
+          )}
 
           <Button color="dark" pill onClick={() => setOpenModal(false)}>
             Close
