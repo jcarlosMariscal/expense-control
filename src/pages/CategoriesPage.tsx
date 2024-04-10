@@ -1,4 +1,4 @@
-import { Button, Dropdown } from "flowbite-react";
+import { Button, Dropdown, Spinner } from "flowbite-react";
 import { TableCategories } from "../components/Pure/TableCategories";
 // import { dataTable } from "../components/data/tableData";
 import { useContext, useEffect, useState } from "react";
@@ -16,19 +16,24 @@ export const CategoriesPage = () => {
   const [catSelected, setCatSelected] = useState("Income");
   const [modalTitle, setModalTitle] = useState("Add Category");
   const [btnText, setBtnText] = useState("Save Category");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getExpensesData = async () => {
+    setIsLoading(true);
     if (!user) return;
     const catExp = await getAllCategories("categories_expense", user?.uid);
     if (catExp.data) {
       setcatExpenses(catExp.data);
+      setIsLoading(false);
     }
   };
   const getIncomesData = async () => {
+    setIsLoading(true);
     if (!user) return;
     const catExp = await getAllCategories("categories_income", user?.uid);
     if (catExp.data) {
       setcatIncomes(catExp.data);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -78,9 +83,25 @@ export const CategoriesPage = () => {
       </div>
       <div className="my-4">
         {catSelected === "Income" ? (
-          <TableCategories data={catIncomes} bg={categoryColor} />
+          <>
+            {isLoading ? (
+              <div className="flex-center">
+                <Spinner aria-label="Spinner" size="xl" />
+              </div>
+            ) : (
+              <TableCategories data={catIncomes} bg={categoryColor} />
+            )}
+          </>
         ) : (
-          <TableCategories data={catExpenses} bg={categoryColor} />
+          <>
+            {isLoading ? (
+              <div className="flex-center">
+                <Spinner aria-label="Spinner" size="xl" />
+              </div>
+            ) : (
+              <TableCategories data={catExpenses} bg={categoryColor} />
+            )}
+          </>
         )}
       </div>
       <ModalComponent
