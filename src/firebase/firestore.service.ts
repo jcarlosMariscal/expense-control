@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -8,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 import { IUserProfile } from "../interfaces/auth.interface";
-import { Response, TCategory } from "../interfaces/collections.interface";
+import { Response, ICategory } from "../interfaces/collections.interface";
 
 export const getUserProfile = async (
   uid: string
@@ -26,12 +27,12 @@ export const getUserProfile = async (
 export const getAllCategories = async (
   collecName: string,
   document: string
-): Promise<Response<TCategory[]>> => {
+): Promise<Response<ICategory[]>> => {
   const q = query(collection(db, collecName, document, "categories"));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
     const categories = querySnapshot.docs.map((doc) => {
-      const data = doc.data() as TCategory;
+      const data = doc.data() as ICategory;
       return { id: doc.id, ...data };
     });
     return { success: true, message: "Datos obtenidos.", data: categories };
@@ -51,12 +52,18 @@ export const createUserProfile = async (
     return { success: false, message: "Error en creación." };
   }
 };
-export const createCategory = async (
-  collection: string,
-  uid: string,
-  id: string,
-  category: TCategory
-): Promise<Response> => {
+type TCreateCategory = {
+  collection: string;
+  uid: string;
+  id: string;
+  category: ICategory;
+};
+export const createCategoryWithId = async ({
+  collection,
+  uid,
+  id,
+  category,
+}: TCreateCategory): Promise<Response> => {
   try {
     await setDoc(doc(db, collection, uid, "categories", id), category);
     return { success: true, message: "Creación correcta" };
@@ -64,15 +71,38 @@ export const createCategory = async (
     return { success: false, message: "Error en creación." };
   }
 };
+export const createCategory = async (
+  name: string,
+  uid: string,
+  category: TCreateCategory
+): Promise<Response> => {
+  try {
+    // const s = await setDoc(doc(db, collection, uid, "categories"), category);
+    await addDoc(collection(db, name, uid, "categories"), category);
+    // const s = await setDoc(doc(db, collection, uid, "categories"), category);
+    // console.log(s.);
+
+    return { success: true, message: "Creación correcta" };
+  } catch (error) {
+    return { success: false, message: "Error en creación." };
+  }
+};
 export const createCategories = async (
-  categories: TCategory[],
+  categories: ICategory[],
   collection: string,
   uid: string
 ): Promise<Response> => {
-  const tasks = categories.map(async (category: TCategory) => {
+  const tasks = categories.map(async (category: ICategory) => {
     const { id, ...categoryData } = category;
     if (id) {
-      return (await createCategory(collection, uid, id, categoryData)).data;
+      return (
+        await createCategoryWithId({
+          collection,
+          uid,
+          id,
+          category: categoryData,
+        })
+      ).data;
     }
   });
   try {

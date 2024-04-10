@@ -3,11 +3,15 @@ import { TableCategories } from "../components/Pure/TableCategories";
 // import { dataTable } from "../components/data/tableData";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getAllCategories } from "../firebase/firestore.service";
+import {
+  createCategory,
+  getAllCategories,
+} from "../firebase/firestore.service";
 import { ICategory } from "../interfaces/collections.interface";
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/Pure/ModalComponent";
 import { ModalContent } from "../components/category/ModalContent";
+import { alertTimer } from "../utils/alerts";
 
 export const CategoriesPage = () => {
   const { user } = useContext(AuthContext);
@@ -17,6 +21,8 @@ export const CategoriesPage = () => {
   const [modalTitle, setModalTitle] = useState("Add Category");
   const [btnText, setBtnText] = useState("Save Category");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [reloadFlag, setReloadFlag] = useState(false);
 
   const getExpensesData = async () => {
     setIsLoading(true);
@@ -39,7 +45,7 @@ export const CategoriesPage = () => {
   useEffect(() => {
     getIncomesData();
     getExpensesData();
-  }, []);
+  }, [reloadFlag]);
 
   const changeCategory = (collection: string) => {
     setCatSelected(collection);
@@ -52,8 +58,22 @@ export const CategoriesPage = () => {
     setModalTitle("Add Category");
     setBtnText("Save Category");
   };
-  const [openModal, setOpenModal] = useState(false);
   const categoryColor = catSelected === "Income" ? "lime" : "yellow";
+
+  const createFirestoreCategory = async (category: ICategory) => {
+    const create = await createCategory(
+      "categories_income",
+      user?.uid,
+      category
+    );
+    if (create.success) {
+      alertTimer("Success", "success", 1500);
+    } else {
+      alertTimer("Error", "error", 1500);
+    }
+    setOpenModal(false);
+    setReloadFlag(!reloadFlag);
+  };
 
   return (
     <>
@@ -112,7 +132,10 @@ export const CategoriesPage = () => {
         handleClick={handleClick}
         color={categoryColor}
       >
-        <ModalContent color={categoryColor} />
+        <ModalContent
+          color={categoryColor}
+          sendCategory={createFirestoreCategory}
+        />
       </ModalComponent>
     </>
   );

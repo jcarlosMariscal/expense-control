@@ -14,8 +14,9 @@ import { ButtonModal } from "./ButtonModal";
 
 type TModalComponent = {
   color: string;
+  sendCategory: (param: ICategory) => void;
 };
-export const ModalContent = ({ color }: TModalComponent) => {
+export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
   const {
     register,
     handleSubmit,
@@ -27,9 +28,10 @@ export const ModalContent = ({ color }: TModalComponent) => {
     useState<keyof typeof colors>("blue");
   const [selectedIcon, setSelectedIcon] = useState<keyof typeof icons>("bus");
 
-  const sendData: SubmitHandler<ICategory> = () => {};
   const handleClick = () => {};
   const handleClickColor = (colorName: keyof typeof colors) => {
+    console.log(colorName);
+
     setSelectedColor(colorName);
     setOpenModal(false);
   };
@@ -44,9 +46,18 @@ export const ModalContent = ({ color }: TModalComponent) => {
     size: "sm",
     className: "bg-transparent",
   };
+  const formData: SubmitHandler<ICategory> = async (data) => {
+    const category: ICategory = {
+      name: data.name,
+      description: data.description,
+      color: selectedColor || "blue",
+      icon: selectedIcon || "bus",
+    };
+    sendCategory(category);
+  };
   return (
     <>
-      <form onSubmit={handleSubmit(sendData)}>
+      <form onSubmit={handleSubmit(formData)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="name" value="Name" className="mb-2 block" />
@@ -82,14 +93,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
           </div>
         </div>
         <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <TextInput
-              placeholder="User"
-              type="text"
-              {...register("color")}
-              className="hidden"
-              value={selectedColor}
-            />
+          <div>
             <ButtonModal
               color={colors[selectedColor]}
               text="Select a Color"
@@ -98,14 +102,7 @@ export const ModalContent = ({ color }: TModalComponent) => {
               <BiPalette size={24} />
             </ButtonModal>
           </div>
-          <div className="flex items-center gap-2 h-12">
-            <TextInput
-              placeholder="User"
-              type="text"
-              {...register("icon")}
-              className="hidden"
-              value={selectedIcon}
-            />
+          <div>
             <ButtonModal
               color={colors[selectedColor]}
               text="Select an Icon"

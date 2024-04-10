@@ -1,6 +1,4 @@
 import * as yup from "yup";
-import { colors } from "../components/data/categoriesColor";
-import icons from "../components/data/categoriesIcons";
 const authMessages = {
   req: "Este campo es obligatorio",
   name: "Debes introducir un nombre",
@@ -39,15 +37,5 @@ export const categorySchema = yup
     id: yup.string(),
     name: yup.string().required(authMessages.req),
     description: yup.string().required(authMessages.req),
-    color: yup
-      .mixed()
-      .oneOf(Object.keys(colors), "Selecciona un color")
-      .required(authMessages.select),
-    icon: yup
-      .mixed()
-      .oneOf(Object.keys(icons), "Selecciona un icono")
-      .required(authMessages.select),
-    // color: yup.string().required(authMessages.select),
-    // icon: yup.string().required(authMessages.select),
   })
   .required();
