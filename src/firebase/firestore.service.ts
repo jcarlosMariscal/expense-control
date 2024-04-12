@@ -25,10 +25,10 @@ export const getUserProfile = async (
 };
 
 export const getAllCategories = async (
-  collecName: string,
-  document: string
+  collectionName: string, // Name Colección Main
+  uid: string // User ID
 ): Promise<Response<ICategory[]>> => {
-  const q = query(collection(db, collecName, document, "categories"));
+  const q = query(collection(db, collectionName, uid, "categories"));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
     const categories = querySnapshot.docs.map((doc) => {
@@ -36,6 +36,25 @@ export const getAllCategories = async (
       return { id: doc.id, ...data };
     });
     return { success: true, message: "Datos obtenidos.", data: categories };
+  } else {
+    return { success: false, message: "Error al obtener datos." };
+  }
+};
+
+export const getCategoryById = async (
+  collectionName: string,
+  uid: string,
+  idCategory: string
+): Promise<Response<ICategory>> => {
+  const docRef = doc(db, collectionName, uid, "categories", idCategory);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return {
+      success: true,
+      message: "Datos obtenidos.",
+      data: docSnap.data() as ICategory,
+    };
   } else {
     return { success: false, message: "Error al obtener datos." };
   }
@@ -134,4 +153,25 @@ export const createCategoriesForUser = async (
     message: res ? "Categorias creadas" : "Crecion fallida",
   };
 };
-// 79
+
+export const updateCategory = async (
+  collectionName: string,
+  uid: string,
+  idCategory: string,
+  category: ICategory
+): Promise<Response> => {
+  try {
+    const docRef = doc(db, collectionName, uid, "categories", idCategory);
+    await setDoc(docRef, category);
+    return {
+      success: true,
+      message: "Categoria actualizada.",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: true,
+      message: "Ha ocurrido un error al actualizar.",
+    };
+  }
+};

@@ -1,15 +1,16 @@
 import { Button, Table } from "flowbite-react";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { TCategory } from "../../interfaces/collections.interface";
 import { colors } from "../data/categoriesColor";
 import icons from "../data/categoriesIcons";
+import { ICategory } from "../../interfaces/collections.interface";
 
 type TTableComponent = {
-  data: TCategory[] | undefined;
+  data: ICategory[] | undefined;
   bg: string;
+  showModal: (param: string) => void;
 };
 
-export const TableCategories = ({ data, bg }: TTableComponent) => {
+export const TableCategories = ({ data, bg, showModal }: TTableComponent) => {
   const categoryColor = (color: keyof typeof colors) => {
     const colorCategory: keyof typeof colors = color;
     const category = colors[colorCategory];
@@ -49,7 +50,13 @@ export const TableCategories = ({ data, bg }: TTableComponent) => {
                 </Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-2">
-                    <Button pill size="xs" className="p-0 size-8" color={bg}>
+                    <Button
+                      pill
+                      size="xs"
+                      className="p-0 size-8"
+                      color={bg}
+                      onClick={() => showModal(item.id as string)}
+                    >
                       <BiEdit size={18} />
                     </Button>
                     <Button pill size="xs" className="p-0 size-8" color="red">

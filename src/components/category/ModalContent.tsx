@@ -6,17 +6,27 @@ import { categorySchema } from "../../hooks/validationForm";
 import { BiPalette } from "react-icons/bi";
 import { colors } from "../data/categoriesColor";
 import { ModalComponent } from "../Pure/ModalComponent";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import icons from "../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
 import { ModalIconsContent } from "./ModalIconsContent";
 import { ButtonModal } from "./ButtonModal";
+import { AuthContext } from "../../context/AuthContext";
+import { getCategoryById } from "../../firebase/firestore.service";
 
 type TModalComponent = {
   color: string;
   sendCategory: (param: ICategory) => void;
+  idCategory?: string | null;
+  collectionName?: string | null;
 };
-export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
+export const ModalContent = ({
+  color,
+  sendCategory,
+  idCategory = null,
+  collectionName = null,
+}: TModalComponent) => {
+  const { user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -24,20 +34,27 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
   } = useForm<ICategory>({ resolver: yupResolver(categorySchema) });
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openModalIcon, setOpenModalIcon] = useState<boolean>(false);
-  const [selectedColor, setSelectedColor] =
-    useState<keyof typeof colors>("blue");
-  const [selectedIcon, setSelectedIcon] = useState<keyof typeof icons>("bus");
+  const [categoryData, setcategoryData] = useState<ICategory>({
+    name: "",
+    description: "",
+    color: "blue",
+    icon: "bus",
+  });
 
   const handleClick = () => {};
   const handleClickColor = (colorName: keyof typeof colors) => {
     console.log(colorName);
 
-    setSelectedColor(colorName);
+    setcategoryData({ ...categoryData, color: colorName });
     setOpenModal(false);
   };
   const handleClickIcon = (iconName: keyof typeof icons) => {
-    setSelectedIcon(iconName);
+    setcategoryData({ ...categoryData, icon: iconName });
     setOpenModalIcon(false);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setcategoryData({ ...categoryData, [name]: value });
   };
   const options = {
     footer: false,
@@ -50,11 +67,33 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
     const category: ICategory = {
       name: data.name,
       description: data.description,
-      color: selectedColor || "blue",
-      icon: selectedIcon || "bus",
+      color: categoryData.color || "blue",
+      icon: categoryData.icon || "bus",
     };
     sendCategory(category);
   };
+  const getDataCategory = async () => {
+    const result = await getCategoryById(
+      collectionName || "",
+      user?.uid || "",
+      idCategory || ""
+    );
+    const { data } = result;
+    if (data) {
+      setcategoryData({
+        name: data?.name ? data?.name : "",
+        description: data?.description ? data?.description : "",
+        color: data?.color ? data?.color : "blue",
+        icon: data?.icon ? data?.icon : "bus",
+      });
+    }
+  };
+  useEffect(() => {
+    if (idCategory && collectionName) {
+      getDataCategory();
+    }
+  }, []);
+
   return (
     <>
       <form onSubmit={handleSubmit(formData)}>
@@ -64,6 +103,7 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
             <TextInput
               id="name"
               placeholder="Name"
+              value={categoryData.name}
               type="text"
               {...register("name")}
               helperText={
@@ -71,6 +111,7 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
                   <p className="text-red-500">{errors.name.message}</p>
                 )
               }
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -82,6 +123,7 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
             <TextInput
               id="description"
               placeholder="Description"
+              value={categoryData.description}
               type="text"
               {...register("description")}
               helperText={
@@ -89,26 +131,27 @@ export const ModalContent = ({ color, sendCategory }: TModalComponent) => {
                   <p className="text-red-500">{errors.description.message}</p>
                 )
               }
+              onChange={handleChange}
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4">
-          <div>
+        <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4 mt-4">
+          <div className="flex items-center gap-2">
             <ButtonModal
-              color={colors[selectedColor]}
+              color={colors[categoryData.color]}
               text="Select a Color"
               handleClick={() => setOpenModal(true)}
             >
               <BiPalette size={24} />
             </ButtonModal>
           </div>
-          <div>
+          <div className="flex items-center gap-2">
             <ButtonModal
-              color={colors[selectedColor]}
+              color={colors[categoryData.color]}
               text="Select an Icon"
               handleClick={() => setOpenModalIcon(true)}
             >
-              {icons[selectedIcon]}
+              {icons[categoryData.icon]}
             </ButtonModal>
           </div>
         </div>

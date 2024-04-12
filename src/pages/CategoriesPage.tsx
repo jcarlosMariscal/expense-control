@@ -1,11 +1,12 @@
 import { Button, Dropdown, Spinner } from "flowbite-react";
-import { TableCategories } from "../components/Pure/TableCategories";
+import { TableCategories } from "../components/category/TableCategories";
 // import { dataTable } from "../components/data/tableData";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   createCategory,
   getAllCategories,
+  updateCategory,
 } from "../firebase/firestore.service";
 import { ICategory } from "../interfaces/collections.interface";
 import { BiPlus } from "react-icons/bi";
@@ -23,6 +24,7 @@ export const CategoriesPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [openModal, setOpenModal] = useState(false);
   const [reloadFlag, setReloadFlag] = useState(false);
+  const [idCategory, setIdCategory] = useState<string | null>(null);
 
   const getExpensesData = async () => {
     setIsLoading(true);
@@ -53,21 +55,37 @@ export const CategoriesPage = () => {
   const handleClick = () => {
     alert("Hola");
   };
-  const addCategory = () => {
+  const showModal = (id: string | null = null) => {
+    setIdCategory(id);
+    const action = id ? "Edit category" : "Create category";
+    const title = catSelected === "Income" ? "for Incomes" : "for Expenses";
     setOpenModal(true);
-    setModalTitle("Add Category");
+    setModalTitle(`${action} ${title}`);
     setBtnText("Save Category");
   };
   const categoryColor = catSelected === "Income" ? "lime" : "yellow";
 
+  const collection =
+    catSelected === "Income" ? "categories_income" : "categories_expense";
   const createFirestoreCategory = async (category: ICategory) => {
-    const create = await createCategory(
-      "categories_income",
+    const create = await createCategory(collection, user?.uid, category);
+    if (create.success) {
+      alertTimer("Success", "success", 1500);
+    } else {
+      alertTimer("Error", "error", 1500);
+    }
+    setOpenModal(false);
+    setReloadFlag(!reloadFlag);
+  };
+  const updateFirestoreCategory = async (category: ICategory) => {
+    const create = await updateCategory(
+      collection,
       user?.uid,
+      idCategory,
       category
     );
     if (create.success) {
-      alertTimer("Success", "success", 1500);
+      alertTimer("Updated", "success", 1500);
     } else {
       alertTimer("Error", "error", 1500);
     }
@@ -95,7 +113,7 @@ export const CategoriesPage = () => {
           className="size-10 ssm:size-auto !flex-center"
           color={categoryColor}
           pill
-          onClick={() => addCategory()}
+          onClick={() => showModal()}
         >
           <span className="hidden ssm:block mr-2 text-sm">New</span>
           <BiPlus className="size-5" />
@@ -109,7 +127,11 @@ export const CategoriesPage = () => {
                 <Spinner aria-label="Spinner" size="xl" />
               </div>
             ) : (
-              <TableCategories data={catIncomes} bg={categoryColor} />
+              <TableCategories
+                data={catIncomes}
+                bg={categoryColor}
+                showModal={(id) => showModal(id)}
+              />
             )}
           </>
         ) : (
@@ -119,7 +141,11 @@ export const CategoriesPage = () => {
                 <Spinner aria-label="Spinner" size="xl" />
               </div>
             ) : (
-              <TableCategories data={catExpenses} bg={categoryColor} />
+              <TableCategories
+                data={catExpenses}
+                bg={categoryColor}
+                showModal={(id) => showModal(id)}
+              />
             )}
           </>
         )}
@@ -134,7 +160,11 @@ export const CategoriesPage = () => {
       >
         <ModalContent
           color={categoryColor}
-          sendCategory={createFirestoreCategory}
+          sendCategory={
+            idCategory ? updateFirestoreCategory : createFirestoreCategory
+          }
+          idCategory={idCategory}
+          collectionName={collection}
         />
       </ModalComponent>
     </>
