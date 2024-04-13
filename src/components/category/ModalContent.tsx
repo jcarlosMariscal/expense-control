@@ -11,6 +11,8 @@ import icons from "../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
 import { ModalIconsContent } from "./ModalIconsContent";
 import { ButtonModal } from "./ButtonModal";
+import {Formik, Form, Field} from 'formik';
+import { FormikFlowbiteTextInput } from "../Pure/FormikFlowbiteTextInput";
 
 type TProps = {
   color: string;
@@ -84,31 +86,29 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
 
   return (
     <>
-      <form onSubmit={handleSubmit(formData)}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="name" value="Name" className="mb-2 block" />
-            <TextInput id="name"  placeholder="Name" type="text" value={categoryData.name} {...register("name")}
-              helperText={
-                errors?.name && (
-                  <p className="text-red-500">{errors.name.message}</p>
-                )
-              }
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="description" value="Description" className="mb-2 block" />
-            <TextInput id="description" placeholder="Description" type="text" value={categoryData.description}
-              {...register("description")}
-              helperText={
-                errors?.description && (
-                  <p className="text-red-500">{errors.description.message}</p>
-                )
-              }
-              onChange={handleChange}
-            />
-          </div>
+     {/* <Formik  */}
+      <Formik
+  initialValues={categoryData}
+  validationSchema={categorySchema}
+  onSubmit={(values) => {
+    console.log(values);
+  }}
+  enableReinitialize 
+>
+  {({ errors, touched }) => (
+    <Form>
+      {/* <Field name="name" />
+      {errors.name && touched.name ? <div>{"se"}</div> : null}
+      <Field name="description" />
+      {errors.description && touched.description ? <div>{"ds"}</div> : null} */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormikFlowbiteTextInput name="name"
+                label="Name"
+                placeholder="Enter your name" />
+            
+                <FormikFlowbiteTextInput name="description"
+                label="Description"
+                placeholder="Enter your description" />
         </div>
         <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4 mt-4">
           <div className="flex items-center gap-2">
@@ -125,7 +125,11 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
           </div>
         </div>
         <Button type="submit" color={color} pill className="my-4">Save Category</Button>
-      </form>
+    </Form>
+  )}
+</Formik>;
+      {/* <form onSubmit={handleSubmit(formData)}>
+      </form> */}
       <div>
         <ModalComponent {...options} handleClick={handleClick} controlsModal={{ openModal, setOpenModal }}>
           <ModalColorsContent handleClick={handleClickColor} />
