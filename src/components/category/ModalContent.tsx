@@ -6,32 +6,23 @@ import { categorySchema } from "../../hooks/validationForm";
 import { BiPalette } from "react-icons/bi";
 import { colors } from "../data/categoriesColor";
 import { ModalComponent } from "../Pure/ModalComponent";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import icons from "../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
 import { ModalIconsContent } from "./ModalIconsContent";
 import { ButtonModal } from "./ButtonModal";
-import { AuthContext } from "../../context/AuthContext";
-import { getCategoryById } from "../../firebase/firestore.service";
 
-type TModalComponent = {
+type TProps = {
   color: string;
   sendCategory: (param: ICategory) => void;
   idCategory?: string | null;
   collectionName?: string | null;
+  categories: ICategory[]
 };
-export const ModalContent = ({
-  color,
-  sendCategory,
-  idCategory = null,
-  collectionName = null,
-}: TModalComponent) => {
-  const { user } = useContext(AuthContext);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ICategory>({ resolver: yupResolver(categorySchema) });
+export const ModalContent = ({color,sendCategory,idCategory = null,collectionName = null, categories}: TProps) => {
+  const { register, handleSubmit, formState: { errors } } = useForm<ICategory>(
+    { resolver: yupResolver(categorySchema) }
+  );
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openModalIcon, setOpenModalIcon] = useState<boolean>(false);
   const [categoryData, setcategoryData] = useState<ICategory>({
@@ -43,8 +34,6 @@ export const ModalContent = ({
 
   const handleClick = () => {};
   const handleClickColor = (colorName: keyof typeof colors) => {
-    console.log(colorName);
-
     setcategoryData({ ...categoryData, color: colorName });
     setOpenModal(false);
   };
@@ -64,6 +53,8 @@ export const ModalContent = ({
     className: "bg-transparent",
   };
   const formData: SubmitHandler<ICategory> = async (data) => {
+    console.log(errors.name);
+    
     const category: ICategory = {
       name: data.name,
       description: data.description,
@@ -72,27 +63,24 @@ export const ModalContent = ({
     };
     sendCategory(category);
   };
-  const getDataCategory = async () => {
-    const result = await getCategoryById(
-      collectionName || "",
-      user?.uid || "",
-      idCategory || ""
-    );
-    const { data } = result;
-    if (data) {
-      setcategoryData({
-        name: data?.name ? data?.name : "",
-        description: data?.description ? data?.description : "",
-        color: data?.color ? data?.color : "blue",
-        icon: data?.icon ? data?.icon : "bus",
-      });
-    }
+  const getDataCategory = () => {
+    const category = categories.filter(el => el.id === idCategory)
+    const data = category[0]
+    console.log(data);
+    
+    setcategoryData({
+      name: data.name,
+      description: data.description,
+      color: data.color,
+      icon: data.icon,
+    });
+    
   };
   useEffect(() => {
     if (idCategory && collectionName) {
       getDataCategory();
     }
-  }, []);
+  }, [idCategory]);
 
   return (
     <>
@@ -100,12 +88,7 @@ export const ModalContent = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="name" value="Name" className="mb-2 block" />
-            <TextInput
-              id="name"
-              placeholder="Name"
-              value={categoryData.name}
-              type="text"
-              {...register("name")}
+            <TextInput id="name"  placeholder="Name" type="text" value={categoryData.name} {...register("name")}
               helperText={
                 errors?.name && (
                   <p className="text-red-500">{errors.name.message}</p>
@@ -115,16 +98,8 @@ export const ModalContent = ({
             />
           </div>
           <div>
-            <Label
-              htmlFor="description"
-              value="Description"
-              className="mb-2 block"
-            />
-            <TextInput
-              id="description"
-              placeholder="Description"
-              value={categoryData.description}
-              type="text"
+            <Label htmlFor="description" value="Description" className="mb-2 block" />
+            <TextInput id="description" placeholder="Description" type="text" value={categoryData.description}
               {...register("description")}
               helperText={
                 errors?.description && (
@@ -137,44 +112,29 @@ export const ModalContent = ({
         </div>
         <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4 mt-4">
           <div className="flex items-center gap-2">
-            <ButtonModal
-              color={colors[categoryData.color]}
-              text="Select a Color"
-              handleClick={() => setOpenModal(true)}
-            >
+            <ButtonModal color={colors[categoryData.color]} text="Select a Color"
+              handleClick={() => setOpenModal(true)}>
               <BiPalette size={24} />
             </ButtonModal>
           </div>
           <div className="flex items-center gap-2">
-            <ButtonModal
-              color={colors[categoryData.color]}
-              text="Select an Icon"
-              handleClick={() => setOpenModalIcon(true)}
-            >
+            <ButtonModal color={colors[categoryData.color]} text="Select an Icon"
+              handleClick={() => setOpenModalIcon(true)}>
               {icons[categoryData.icon]}
             </ButtonModal>
           </div>
         </div>
-        <Button type="submit" color={color} pill className="my-4">
-          Save Category
-        </Button>
+        <Button type="submit" color={color} pill className="my-4">Save Category</Button>
       </form>
       <div>
-        <ModalComponent
-          controlsModal={{ openModal, setOpenModal }}
-          handleClick={handleClick}
-          {...options}
-        >
+        <ModalComponent {...options} handleClick={handleClick} controlsModal={{ openModal, setOpenModal }}>
           <ModalColorsContent handleClick={handleClickColor} />
         </ModalComponent>
-        <ModalComponent
+        <ModalComponent {...options} handleClick={handleClick}
           controlsModal={{
             openModal: openModalIcon,
             setOpenModal: setOpenModalIcon,
-          }}
-          handleClick={handleClick}
-          {...options}
-        >
+          }}>
           <ModalIconsContent handleClick={handleClickIcon} />
         </ModalComponent>
       </div>

@@ -33,6 +33,7 @@ export const CategoriesPage = () => {
     if (catExp.data) {
       setcatExpenses(catExp.data);
       setIsLoading(false);
+      
     }
   };
   const getIncomesData = async () => {
@@ -42,11 +43,15 @@ export const CategoriesPage = () => {
     if (catExp.data) {
       setcatIncomes(catExp.data);
       setIsLoading(false);
+      
     }
   };
   useEffect(() => {
     getIncomesData();
     getExpensesData();
+    // console.log(catExpenses);
+    // console.log(catIncomes);
+    
   }, [reloadFlag]);
 
   const changeCategory = (collection: string) => {
@@ -65,8 +70,8 @@ export const CategoriesPage = () => {
   };
   const categoryColor = catSelected === "Income" ? "lime" : "yellow";
 
-  const collection =
-    catSelected === "Income" ? "categories_income" : "categories_expense";
+  const collection = catSelected === "Income" ? "categories_income" : "categories_expense";
+  const categoryData = catSelected === "Income" ? catIncomes : catExpenses;
   const createFirestoreCategory = async (category: ICategory) => {
     const create = await createCategory(collection, user?.uid, category);
     if (create.success) {
@@ -165,6 +170,7 @@ export const CategoriesPage = () => {
           }
           idCategory={idCategory}
           collectionName={collection}
+          categories={categoryData}
         />
       </ModalComponent>
     </>
