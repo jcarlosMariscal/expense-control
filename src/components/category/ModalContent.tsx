@@ -1,7 +1,5 @@
-import { Button, Label, TextInput } from "flowbite-react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Button } from "flowbite-react";
 import { ICategory } from "../../interfaces/collections.interface";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "../../hooks/validationForm";
 import { BiPalette } from "react-icons/bi";
 import { colors } from "../data/categoriesColor";
@@ -11,8 +9,10 @@ import icons from "../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
 import { ModalIconsContent } from "./ModalIconsContent";
 import { ButtonModal } from "./ButtonModal";
-import {Formik, Form, Field} from 'formik';
+import {Formik, Form} from 'formik';
 import { FormikFlowbiteTextInput } from "../Pure/FormikFlowbiteTextInput";
+// import { AuthContext } from "../../context/AuthContext";
+// import { getCategoryById } from "../../firebase/firestore.service";
 
 type TProps = {
   color: string;
@@ -21,10 +21,9 @@ type TProps = {
   collectionName?: string | null;
   categories: ICategory[]
 };
-export const ModalContent = ({color,sendCategory,idCategory = null,collectionName = null, categories}: TProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<ICategory>(
-    { resolver: yupResolver(categorySchema) }
-  );
+export const ModalContent = ({ color, sendCategory, idCategory = null, collectionName = null, categories }: TProps) => {
+  // const context = useContext(AuthContext);
+  // const { user } = context;
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openModalIcon, setOpenModalIcon] = useState<boolean>(false);
   const [categoryData, setcategoryData] = useState<ICategory>({
@@ -43,7 +42,7 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
     setcategoryData({ ...categoryData, icon: iconName });
     setOpenModalIcon(false);
   };
-  const handleChange = (e) => {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setcategoryData({ ...categoryData, [name]: value });
   };
@@ -54,9 +53,7 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
     size: "sm",
     className: "bg-transparent",
   };
-  const formData: SubmitHandler<ICategory> = async (data) => {
-    console.log(errors.name);
-    
+  const formData = (data:ICategory) => {
     const category: ICategory = {
       name: data.name,
       description: data.description,
@@ -65,50 +62,35 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
     };
     sendCategory(category);
   };
-  const getDataCategory = () => {
-    const category = categories.filter(el => el.id === idCategory)
-    const data = category[0]
-    console.log(data);
+  // const getCategory = async () => {
+  //   const get = await getCategoryById(collectionName, user?.uid, idCategory)
+  //   console.log(get.data);
     
-    setcategoryData({
-      name: data.name,
-      description: data.description,
-      color: data.color,
-      icon: data.icon,
-    });
-    
-  };
+  // }
   useEffect(() => {
     if (idCategory && collectionName) {
-      getDataCategory();
+      const category = categories.filter(el => el.id === idCategory)
+      const data = category[0]
+      setcategoryData({
+        name: data.name,
+        description: data.description,
+        color: data.color,
+        icon: data.icon,
+      });
+      // getCategory()
     }
-  }, [idCategory]);
+  }, [idCategory, collectionName,categories ]);
 
   return (
     <>
-     {/* <Formik  */}
-      <Formik
-  initialValues={categoryData}
-  validationSchema={categorySchema}
-  onSubmit={(values) => {
-    console.log(values);
-  }}
-  enableReinitialize 
->
-  {({ errors, touched }) => (
-    <Form>
-      {/* <Field name="name" />
-      {errors.name && touched.name ? <div>{"se"}</div> : null}
-      <Field name="description" />
-      {errors.description && touched.description ? <div>{"ds"}</div> : null} */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormikFlowbiteTextInput name="name"
-                label="Name"
-                placeholder="Enter your name" />
-            
-                <FormikFlowbiteTextInput name="description"
-                label="Description"
-                placeholder="Enter your description" />
+      <Formik initialValues={categoryData} validationSchema={categorySchema} enableReinitialize
+        onSubmit={(values) => formData(values)}>
+        <Form>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormikFlowbiteTextInput name="name" label="Name" placeholder="Enter a name"
+              handleChange={handleChange} />
+            <FormikFlowbiteTextInput name="description" label="Description" placeholder="Enter a description"
+              handleChange={handleChange} />
         </div>
         <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4 mt-4">
           <div className="flex items-center gap-2">
@@ -125,11 +107,8 @@ export const ModalContent = ({color,sendCategory,idCategory = null,collectionNam
           </div>
         </div>
         <Button type="submit" color={color} pill className="my-4">Save Category</Button>
-    </Form>
-  )}
-</Formik>;
-      {/* <form onSubmit={handleSubmit(formData)}>
-      </form> */}
+      </Form>
+    </Formik>;
       <div>
         <ModalComponent {...options} handleClick={handleClick} controlsModal={{ openModal, setOpenModal }}>
           <ModalColorsContent handleClick={handleClickColor} />
