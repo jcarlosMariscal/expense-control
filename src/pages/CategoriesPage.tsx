@@ -13,9 +13,12 @@ import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/Pure/ModalComponent";
 import { ModalContent } from "../components/category/ModalContent";
 import { alertTimer } from "../utils/alerts";
+import { FirestoreContext } from "../context/FirestoreContext";
 
 export const CategoriesPage = () => {
   const { user } = useContext(AuthContext);
+  const firestore  = useContext(FirestoreContext);
+  const { getCollectionData } = firestore;
   const [catExpenses, setcatExpenses] = useState<ICategory[]>();
   const [catIncomes, setcatIncomes] = useState<ICategory[]>();
   const [catSelected, setCatSelected] = useState("Income");
@@ -45,10 +48,12 @@ export const CategoriesPage = () => {
       setIsLoading(false);
       
     }
+    await getCollectionData();
   };
   useEffect(() => {
     getIncomesData();
     getExpensesData();
+
     // console.log(catExpenses);
     // console.log(catIncomes);
     

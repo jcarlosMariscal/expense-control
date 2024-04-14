@@ -1,6 +1,12 @@
 import { createContext } from "react";
+import { ICategory } from "../interfaces/collections.interface";
 
-export const FirestoreContext = createContext({
+  type TValues = {
+    collectionData: ICategory[]
+    loading: boolean;
+    getCollectionData: () => void
+  }
+export const FirestoreContext = createContext<TValues>({
   collectionData: [],
   loading: false,
   getCollectionData: async () => {
