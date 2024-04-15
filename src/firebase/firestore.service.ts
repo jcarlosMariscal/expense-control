@@ -93,7 +93,7 @@ export const createCategoryWithId = async ({
 export const createCategory = async (
   name: string,
   uid: string,
-  category: TCreateCategory
+  category: ICategory
 ): Promise<Response> => {
   try {
     // const s = await setDoc(doc(db, collection, uid, "categories"), category);

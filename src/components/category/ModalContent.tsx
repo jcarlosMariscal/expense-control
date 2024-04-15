@@ -4,34 +4,23 @@ import { categorySchema } from "../../hooks/validationForm";
 import { BiPalette } from "react-icons/bi";
 import { colors } from "../data/categoriesColor";
 import { ModalComponent } from "../Pure/ModalComponent";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import icons from "../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
 import { ModalIconsContent } from "./ModalIconsContent";
 import { ButtonModal } from "./ButtonModal";
 import {Formik, Form} from 'formik';
 import { FormikFlowbiteTextInput } from "../Pure/FormikFlowbiteTextInput";
-// import { AuthContext } from "../../context/AuthContext";
-// import { getCategoryById } from "../../firebase/firestore.service";
 
 type TProps = {
   color: string;
   sendCategory: (param: ICategory) => void;
-  idCategory?: string | null;
-  collectionName?: string | null;
-  categories: ICategory[]
+  initialData: ICategory
 };
-export const ModalContent = ({ color, sendCategory, idCategory = null, collectionName = null, categories }: TProps) => {
-  // const context = useContext(AuthContext);
-  // const { user } = context;
+export const ModalContent = ({ color, sendCategory, initialData }: TProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [openModalIcon, setOpenModalIcon] = useState<boolean>(false);
-  const [categoryData, setcategoryData] = useState<ICategory>({
-    name: "",
-    description: "",
-    color: "blue",
-    icon: "bus",
-  });
+  const [categoryData, setcategoryData] = useState<ICategory>(initialData);
 
   const handleClick = () => {};
   const handleClickColor = (colorName: keyof typeof colors) => {
@@ -62,24 +51,6 @@ export const ModalContent = ({ color, sendCategory, idCategory = null, collectio
     };
     sendCategory(category);
   };
-  // const getCategory = async () => {
-  //   const get = await getCategoryById(collectionName, user?.uid, idCategory)
-  //   console.log(get.data);
-    
-  // }
-  useEffect(() => {
-    if (idCategory && collectionName) {
-      const category = categories.filter(el => el.id === idCategory)
-      const data = category[0]
-      setcategoryData({
-        name: data.name,
-        description: data.description,
-        color: data.color,
-        icon: data.icon,
-      });
-      // getCategory()
-    }
-  }, [idCategory, collectionName,categories ]);
 
   return (
     <>
