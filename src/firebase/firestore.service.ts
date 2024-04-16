@@ -25,18 +25,19 @@ export const getUserProfile = async (
   }
 };
 
-export const getAllCategories = async (
+export const getAllCollection = async (
   collectionName: string, // Name Colección Main
-  uid: string // User ID
+  uid: string, // User ID
+  subCollection:string
 ): Promise<Response<ICategory[]>> => {
-  const q = query(collection(db, collectionName, uid, "categories"));
+  const q = query(collection(db, collectionName, uid, subCollection));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
-    const categories = querySnapshot.docs.map((doc) => {
+    const collectionData = querySnapshot.docs.map((doc) => {
       const data = doc.data() as ICategory;
       return { id: doc.id, ...data };
     });
-    return { success: true, message: "Datos obtenidos.", data: categories };
+    return { success: true, message: "Datos obtenidos.", data: collectionData };
   } else {
     return { success: false, message: "Error al obtener datos." };
   }
@@ -138,8 +139,8 @@ export const createCategoriesForUser = async (
 ): Promise<Response> => {
   const catExp = "categories_expense";
   const catInc = "categories_income";
-  const catExpense = await getAllCategories(catExp, "categories_default");
-  const catIncome = await getAllCategories(catInc, "categories_default");
+  const catExpense = await getAllCollection(catExp, "categories_default", "categories");
+  const catIncome = await getAllCollection(catInc, "categories_default", "categories");
   if (!catExpense.success || !catIncome.success)
     return { success: false, message: "No arreglos" };
   let res: boolean = false;

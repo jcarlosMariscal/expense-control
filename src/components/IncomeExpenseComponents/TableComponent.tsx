@@ -1,14 +1,16 @@
 import { Button, Table } from "flowbite-react";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { TDataTable } from "../../interfaces/dataTables";
+import { ICollectionMain } from "../../interfaces/collections.interface";
 
-type TTableComponent = {
-  data: TDataTable[];
+type TProps = {
+  data: ICollectionMain[] | null;
 };
 
-export const TableComponent = ({ data }: TTableComponent) => {
+export const TableComponent = ({ data }: TProps) => {
   return (
     <div className="overflow-x-auto w-full">
+      {data ? (
+
       <Table>
         <Table.Head>
           <Table.HeadCell>Name</Table.HeadCell>
@@ -30,12 +32,12 @@ export const TableComponent = ({ data }: TTableComponent) => {
               <Table.Cell className="table-cell lg:hidden">
                 {item.description}
               </Table.Cell>
-              <Table.Cell className="table-cell">{item.date}</Table.Cell>
+              <Table.Cell className="table-cell">{item.name}</Table.Cell>
               <Table.Cell className="table-color">
-                <span className={item.color}>{item.icon}</span>
+                <span>{item.name}</span>
               </Table.Cell>
               <Table.Cell>{item.category}</Table.Cell>
-              <Table.Cell>${item.price}</Table.Cell>
+              <Table.Cell>${item.name}</Table.Cell>
               <Table.Cell>
                 <div className="flex gap-2">
                   <Button pill size="xs" className="p-0 size-8" color="success">
@@ -50,6 +52,9 @@ export const TableComponent = ({ data }: TTableComponent) => {
           ))}
         </Table.Body>
       </Table>
+      ) : (
+          <div>Mada</div>
+      )}
     </div>
   );
 };

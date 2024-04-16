@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import {
   createCategory,
   deleteCategory,
-  getAllCategories,
+  getAllCollection,
   updateCategory,
 } from "../firebase/firestore.service";
 import { ICategory } from "../interfaces/collections.interface";
@@ -33,7 +33,7 @@ export const CategoriesPage = () => {
   const getCategoriesData = async (collection:string, setCategories:(param:ICategory[])=>void) => {
     setIsLoading(true);
     if (!user) return;
-    const catExp = await getAllCategories(collection, user?.uid);
+    const catExp = await getAllCollection(collection, user?.uid, "categories");
     if (catExp.data) {
       setCategories(catExp.data);
       setIsLoading(false);

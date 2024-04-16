@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { colors } from "../data/categoriesColor";
 import icons from "../data/categoriesIcons";
 
@@ -13,6 +14,13 @@ export interface ICategory {
   description: string;
   color: keyof typeof colors;
   icon: keyof typeof icons;
+}
+export interface ICollectionMain {
+  id?: string;
+  name: string;
+  description: string;
+  date?: Timestamp;
+  category: string;
 }
 
 // ----------------- PARAMS METHODS ------------------------------
