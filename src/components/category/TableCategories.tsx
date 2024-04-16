@@ -8,9 +8,10 @@ type TTableComponent = {
   data: ICategory[] | undefined;
   bg: string;
   showModal: (param: string) => void;
+  showConfirmAlert: (param: string, param2:string) => void;
 };
 
-export const TableCategories = ({ data, bg, showModal }: TTableComponent) => {
+export const TableCategories = ({ data, bg, showModal, showConfirmAlert }: TTableComponent) => {
   const categoryColor = (color: keyof typeof colors) => {
     const colorCategory: keyof typeof colors = color;
     const category = colors[colorCategory];
@@ -59,7 +60,8 @@ export const TableCategories = ({ data, bg, showModal }: TTableComponent) => {
                     >
                       <BiEdit size={18} />
                     </Button>
-                    <Button pill size="xs" className="p-0 size-8" color="red">
+                    <Button pill size="xs" className="p-0 size-8" color="red"
+                      onClick={() => showConfirmAlert(item.id as string, item.name as string)}>
                       <BiTrash size={18} />
                     </Button>
                   </div>

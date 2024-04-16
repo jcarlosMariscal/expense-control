@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -175,3 +176,21 @@ export const updateCategory = async (
     };
   }
 };
+
+
+// ----------------- DELETE -----------------
+export const deleteCategory = async (collectionName:string, uid:string, idCategory:string) => {
+  try {
+    await deleteDoc(doc(db, collectionName, uid, "categories", idCategory));
+        return {
+      success: true,
+      message: "Categoria Eliminada.",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: true,
+      message: "Ha ocurrido un error al intentar eliminar la categoría",
+    };
+  }
+}

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   createCategory,
+  deleteCategory,
   getAllCategories,
   updateCategory,
 } from "../firebase/firestore.service";
@@ -11,7 +12,7 @@ import { ICategory } from "../interfaces/collections.interface";
 import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/Pure/ModalComponent";
 import { ModalContent } from "../components/category/ModalContent";
-import { alertTimer } from "../utils/alerts";
+import { alertTimer, deleteDocument } from "../utils/alerts";
 
 export const CategoriesPage = () => {
   const { user } = useContext(AuthContext);
@@ -78,6 +79,22 @@ export const CategoriesPage = () => {
     setOpenModal(false);
     setReloadFlag(!reloadFlag);
   };
+  const showConfirmAlert = async(id:string, name:string) => {
+    const response = await deleteDocument({
+        title: `Delete category ${name}`,
+        text: "Are you sure to delete this category?",
+        confirmButtonText: "Delete",
+        confirmButtonColor: "#dc2626"
+    })
+    if (response) {
+      if (response.success) {
+        if (!user) return;
+        const res = await deleteCategory(current.collection, user?.uid, id);
+        res.success ? alertTimer("Deleted", "success", 1500) : alertTimer("Error", "error", 1500);
+      }
+    }
+    setReloadFlag(!reloadFlag);
+  }
 
   return (
     <>
@@ -96,7 +113,8 @@ export const CategoriesPage = () => {
         {isLoading ? (
           <div className="flex-center"> <Spinner aria-label="Spinner" size="xl" /> </div>
         ) : (
-          <TableCategories data={current.data} bg={current.color} showModal={(id) => showModal(id)} />
+            <TableCategories data={current.data} bg={current.color}
+              showModal={(id) => showModal(id)} showConfirmAlert={showConfirmAlert} />
         )}
       </div>
       <ModalComponent controlsModal={{ openModal, setOpenModal }} title={modalTitle} footer={false}
