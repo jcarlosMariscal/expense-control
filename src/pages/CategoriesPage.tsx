@@ -13,9 +13,11 @@ import { BiPlus } from "react-icons/bi";
 import { ModalComponent } from "../components/Pure/ModalComponent";
 import { ModalContent } from "../components/category/ModalContent";
 import { alertTimer, deleteDocument } from "../utils/alerts";
+import { AppContext } from "../context/AppContext";
 
 export const CategoriesPage = () => {
   const { user } = useContext(AuthContext);
+  const { modalExpenseCategory, modalIncomeCategory } = useContext(AppContext);
   const [catExpenses, setCatExpenses] = useState<ICategory[]>();
   const [catIncomes, setCatIncomes] = useState<ICategory[]>();
   const [catSelected, setCatSelected] = useState("Income");
@@ -23,7 +25,7 @@ export const CategoriesPage = () => {
   const [reloadFlag, setReloadFlag] = useState(false);
   // ------------ MODAL -----------------
   const [idCategory, setIdCategory] = useState<string | null>(null);
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add Category");
   const [btnText, setBtnText] = useState("Save Category");
   const [categoryInitialData, setCategoryInitialData] = useState<ICategory>(
@@ -46,7 +48,9 @@ export const CategoriesPage = () => {
   const current = {
     color: catSelected === "Income" ? "lime" : "yellow",
     collection: catSelected === "Income" ? "categories_income" : "categories_expense",
-    data: catSelected === "Income" ? catIncomes : catExpenses
+    data: catSelected === "Income" ? catIncomes : catExpenses,
+    isModal: catSelected === "Income" ? modalIncomeCategory.isModalIncomeCatOpen : modalExpenseCategory.isModalExpenseCatOpen,
+    isModalAction: catSelected === "Income" ? modalIncomeCategory.toggleModalIncomeCat : modalExpenseCategory.toggleModalExpenseCat,
   }
   const changeCategory = (collection: string) => setCatSelected(collection);
   
@@ -55,7 +59,7 @@ export const CategoriesPage = () => {
     const action = id ? "Edit category" : "Create category";
     const btnText = id ? "Update category" : "Save category";
     const title = catSelected === "Income" ? "for Incomes" : "for Expenses";
-    setOpenModal(true);
+    current.isModalAction(true);
     setModalTitle(`${action} ${title}`);
     setBtnText(btnText);
     
@@ -69,14 +73,14 @@ export const CategoriesPage = () => {
     if (!user) return
     const create = await createCategory(current.collection, user?.uid, category);
     create.success ? alertTimer("Success", "success", 1500) : alertTimer("Error", "error", 1500);
-    setOpenModal(false);
+    current.isModalAction(false);
     setReloadFlag(!reloadFlag);
   };
   const updateFirestoreCategory = async (category: ICategory) => {
     if (!user || !idCategory) return;
     const create = await updateCategory(current.collection, user?.uid, idCategory,category);
     create.success ? alertTimer("Success", "success", 1500) : alertTimer("Error", "error", 1500);
-    setOpenModal(false);
+    current.isModalAction(false);
     setReloadFlag(!reloadFlag);
   };
   const showConfirmAlert = async(id:string, name:string) => {
@@ -117,7 +121,10 @@ export const CategoriesPage = () => {
               showModal={(id) => showModal(id)} showConfirmAlert={showConfirmAlert} />
         )}
       </div>
-      <ModalComponent controlsModal={{ openModal, setOpenModal }} title={modalTitle} footer={false}
+      <ModalComponent title={modalTitle} footer={false}   controlsModal = {
+    {openModal: current.isModal,
+    toggleModal: current.isModalAction}
+  }
         btnText={btnText} color={current.color}>
         <ModalContent color={current.color} initialData={categoryInitialData}
           sendCategory={ idCategory ? updateFirestoreCategory : createFirestoreCategory}

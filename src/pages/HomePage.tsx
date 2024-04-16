@@ -3,6 +3,7 @@ import { HeaderComponent } from "../components/HeaderComponent";
 import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarComponent } from "../components/SidebarComponents/SidebarComponent";
 import { AuthContext } from "../context/AuthContext";
+// import { ModalComponent } from "../components/Pure/ModalComponent";
 // import { Spinner } from "flowbite-react";
 
 export const HomePage = () => {
@@ -17,6 +18,7 @@ export const HomePage = () => {
   return (
     <>
       {user ? (
+        <>
         <div className="flex">
           <SidebarComponent menuMobile={menuMobile} toggleMenu={toggleMenu} />
           <div className="content-main" id="contentMain">
@@ -25,7 +27,9 @@ export const HomePage = () => {
               <Outlet />
             </div>
           </div>
-        </div>
+          </div>
+          {/* <ModalComponent title='Hola'>s</ModalComponent> */}
+        </>
       ) : (
         <div className="color-bg-primary h-screen flex-center"></div>
       )}

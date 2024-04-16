@@ -1,9 +1,8 @@
-import { Button } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import { ICategory } from "../../interfaces/collections.interface";
 import { categorySchema } from "../../hooks/validationForm";
 import { BiPalette } from "react-icons/bi";
 import { colors } from "../../data/categoriesColor";
-import { ModalComponent } from "../Pure/ModalComponent";
 import { useState } from "react";
 import icons from "../../data/categoriesIcons";
 import { ModalColorsContent } from "./ModalColorsContent";
@@ -22,7 +21,6 @@ export const ModalContent = ({ color, sendCategory, initialData }: TProps) => {
   const [openModalIcon, setOpenModalIcon] = useState<boolean>(false);
   const [categoryData, setcategoryData] = useState<ICategory>(initialData);
 
-  const handleClick = () => {};
   const handleClickColor = (colorName: keyof typeof colors) => {
     setcategoryData({ ...categoryData, color: colorName });
     setOpenModal(false);
@@ -36,9 +34,6 @@ export const ModalContent = ({ color, sendCategory, initialData }: TProps) => {
     setcategoryData({ ...categoryData, [name]: value });
   };
   const options = {
-    footer: false,
-    header: false,
-    dismissible: true,
     size: "sm",
     className: "bg-transparent",
   };
@@ -80,17 +75,17 @@ export const ModalContent = ({ color, sendCategory, initialData }: TProps) => {
         <Button type="submit" color={color} pill className="my-4">Save Category</Button>
       </Form>
     </Formik>;
-      <div>
-        <ModalComponent {...options} handleClick={handleClick} controlsModal={{ openModal, setOpenModal }}>
+    <div>
+      <Modal dismissible show={openModal} {...options} onClose={() => setOpenModal(false)}>
+        <Modal.Body>
           <ModalColorsContent handleClick={handleClickColor} />
-        </ModalComponent>
-        <ModalComponent {...options} handleClick={handleClick}
-          controlsModal={{
-            openModal: openModalIcon,
-            setOpenModal: setOpenModalIcon,
-          }}>
+        </Modal.Body>
+      </Modal>
+      <Modal dismissible show={openModalIcon} {...options} onClose={() => setOpenModalIcon(false)}>
+        <Modal.Body>
           <ModalIconsContent handleClick={handleClickIcon} />
-        </ModalComponent>
+        </Modal.Body>
+      </Modal>
       </div>
     </>
   );

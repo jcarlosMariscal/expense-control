@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 type TModalComponent = {
   controlsModal: {
     openModal: boolean;
-    setOpenModal: (param: boolean) => void;
+    toggleModal: (param: boolean) => void;
   };
   title?: string;
   children: ReactNode;
@@ -30,13 +30,13 @@ export const ModalComponent = ({
   size = "2xl",
   className = "",
 }: TModalComponent) => {
-  const { openModal, setOpenModal } = controlsModal;
+  const { openModal, toggleModal } = controlsModal;
   return (
     <Modal
       dismissible={dismissible}
       show={openModal}
       size={size}
-      onClose={() => setOpenModal(false)}
+      onClose={() => toggleModal(false)}
       className={className}
     >
       {header && <Modal.Header>{title || "Modal Component"}</Modal.Header>}
@@ -49,7 +49,7 @@ export const ModalComponent = ({
             </Button>
           )}
 
-          <Button color="dark" pill onClick={() => setOpenModal(false)}>
+          <Button color="dark" pill onClick={() => toggleModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -57,3 +57,4 @@ export const ModalComponent = ({
     </Modal>
   );
 };
+// 60

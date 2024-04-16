@@ -1,16 +1,27 @@
 import { Button, Table } from "flowbite-react";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { ICollectionMain } from "../../interfaces/collections.interface";
+import { NoDataTable } from "../Pure/NoDataTable";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 type TProps = {
   data: ICollectionMain[] | null;
 };
 
 export const TableComponent = ({ data }: TProps) => {
+  const { modalIncome } = useContext(AppContext);
+  const {toggleModalIncome} = modalIncome
+
+  const addNew = () => {
+    console.log("click");
+    
+    toggleModalIncome(true)
+    
+  }
   return (
     <div className="overflow-x-auto w-full">
       {data ? (
-
       <Table>
         <Table.Head>
           <Table.HeadCell>Name</Table.HeadCell>
@@ -53,7 +64,8 @@ export const TableComponent = ({ data }: TProps) => {
         </Table.Body>
       </Table>
       ) : (
-          <div>Mada</div>
+          <NoDataTable text="There appears to be no recorded income." actionText="Do you want to add one?"
+            handleClick={addNew} />
       )}
     </div>
   );
