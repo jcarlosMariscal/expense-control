@@ -1,5 +1,5 @@
 import { CardInfo } from "../components/Cards/CardInfo";
-import { cardsDashboard } from "../components/data/cardsData";
+import { cardsDashboard } from "../data/cardsData";
 import { ChartsContent } from "../components/DashboardComponents/ChartsContent";
 import { CardsResume } from "../components/DashboardComponents/CardsResume";
 import { SectionTitle } from "../components/Pure/SectionTitle";

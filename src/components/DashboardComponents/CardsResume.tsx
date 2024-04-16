@@ -1,4 +1,4 @@
-import { cardsSup } from "../data/cardsData";
+import { cardsSup } from "../../data/cardsData";
 import { CardSimpleIcon } from "../Cards/CardSimpleIcon";
 
 export const CardsResume = () => {

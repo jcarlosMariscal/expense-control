@@ -1,6 +1,6 @@
 import { TChartData } from "../../interfaces/chartTypes";
 import { BarChartComponent } from "../Charts/BarChartComponent";
-import { dataChart1, dataChart2 } from "../data/chartsData";
+import { dataChart1, dataChart2 } from "../../data/chartsData";
 
 const chart1 = dataChart1;
 const chart2 = dataChart2;

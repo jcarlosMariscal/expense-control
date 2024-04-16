@@ -79,10 +79,12 @@ import {
   BiSun,
   BiTrophy,
 } from "react-icons/bi";
+import { CiCircleMore } from "react-icons/ci";
 import { FaRegSadTear } from "react-icons/fa";
-import { GiPathDistance, GiTreeBeehive } from "react-icons/gi";
+import { GiClothes, GiHealthPotion, GiPathDistance, GiPayMoney, GiTreeBeehive } from "react-icons/gi";
+import { HiOutlineBuildingStorefront } from "react-icons/hi2";
 import { LuDog } from "react-icons/lu";
-import { MdFamilyRestroom } from "react-icons/md";
+import { MdFamilyRestroom, MdOutlineCleaningServices, MdOutlineSecurity } from "react-icons/md";
 
 const icons = {
   album: <BiAlbum size={24} />,
@@ -106,7 +108,7 @@ const icons = {
   camera: <BiCamera size={24} />,
   capsule: <BiCapsule size={24} />,
   car: <BiCar size={24} />,
-  supermarket: <BiCart size={24} />,
+  cart: <BiCart size={24} />,
   ccTv: <BiCctv size={24} />,
   chair: <BiChair size={24} />,
   cheese: <BiCheese size={24} />,
@@ -169,6 +171,13 @@ const icons = {
   creativity: <BiPaint size={24} />,
   adventure: <GiPathDistance size={24} />,
   learning: <BiChalkboard size={24} />,
+  service: <MdOutlineCleaningServices size={24} />,
+  supermarket: <HiOutlineBuildingStorefront size={24} />,
+  clothes: <GiClothes size={24} />,
+  security: <MdOutlineSecurity size={24} />,
+  health: <GiHealthPotion size={24} />,
+  others: <CiCircleMore size={24} />,
+  salary: <GiPayMoney size={24} />,
 };
 
 export default icons;

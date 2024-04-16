@@ -1,4 +1,4 @@
-import { TCardDashboard, TcardSimple } from "../../interfaces/CardTypes";
+import { TCardDashboard, TcardSimple } from "../interfaces/CardTypes";
 import expenseControl from "@/assets/images/expense-control.png";
 
 export const cardsSup: TcardSimple[] = [

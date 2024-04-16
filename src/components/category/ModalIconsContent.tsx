@@ -1,4 +1,4 @@
-import icons from "../data/categoriesIcons";
+import icons from "../../data/categoriesIcons";
 
 type TModalColorsContent = {
   handleClick: (param: keyof typeof icons) => void;
@@ -11,6 +11,7 @@ export const ModalIconsContent = ({ handleClick }: TModalColorsContent) => {
         <div
           key={iconName}
           className="size-8 cursor-pointer"
+          title={iconName}
           onClick={() => handleClick(iconName as keyof typeof icons)}
         >
           <span className="color-text">{iconComponent}</span>

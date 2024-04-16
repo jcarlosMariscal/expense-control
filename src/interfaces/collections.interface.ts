@@ -1,5 +1,5 @@
-import { colors } from "../components/data/categoriesColor";
-import icons from "../components/data/categoriesIcons";
+import { colors } from "../data/categoriesColor";
+import icons from "../data/categoriesIcons";
 
 export interface Response<IData = undefined> {
   success: boolean;

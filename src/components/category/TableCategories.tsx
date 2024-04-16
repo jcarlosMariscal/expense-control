@@ -1,7 +1,7 @@
 import { Button, Table } from "flowbite-react";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { colors } from "../data/categoriesColor";
-import icons from "../data/categoriesIcons";
+import { colors } from "../../data/categoriesColor";
+import icons from "../../data/categoriesIcons";
 import { ICategory } from "../../interfaces/collections.interface";
 
 type TTableComponent = {

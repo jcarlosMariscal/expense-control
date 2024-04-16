@@ -1,4 +1,4 @@
-import { colors } from "../data/categoriesColor";
+import { colors } from "../../data/categoriesColor";
 
 type TModalColorsContent = {
   handleClick: (param: keyof typeof colors) => void;

@@ -1,6 +1,6 @@
 import { SectionTitle } from "../components/Pure/SectionTitle";
 import { TableComponent } from "../components/Pure/TableComponent";
-import { dataTable } from "../components/data/tableData";
+import { dataTable } from "../data/tableData";
 
 export const IncomePage = () => {
   return (
