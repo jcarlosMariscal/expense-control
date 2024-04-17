@@ -10,13 +10,12 @@ type TProps = {
 };
 
 export const TableComponent = ({ data }: TProps) => {
-  const { modalIncome } = useContext(AppContext);
-  const {toggleModalIncome} = modalIncome
+  const { modalAdd } = useContext(AppContext);
+  const { toggleModalAdd,changeTitleModalAdd } = modalAdd;
 
   const addNew = () => {
-    console.log("click");
-    
-    toggleModalIncome(true)
+    toggleModalAdd(true)
+    changeTitleModalAdd("Add new income")
     
   }
   return (

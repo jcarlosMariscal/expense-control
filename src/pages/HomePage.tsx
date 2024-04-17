@@ -3,6 +3,7 @@ import { HeaderComponent } from "../components/HeaderComponent";
 import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarComponent } from "../components/SidebarComponents/SidebarComponent";
 import { AuthContext } from "../context/AuthContext";
+import { ModalFormAddComponent } from "../components/IncomeExpenseComponents/ModalFormAddComponent";
 // import { ModalComponent } from "../components/Pure/ModalComponent";
 // import { Spinner } from "flowbite-react";
 
@@ -29,6 +30,7 @@ export const HomePage = () => {
           </div>
           </div>
           {/* <ModalComponent title='Hola'>s</ModalComponent> */}
+          <ModalFormAddComponent />
         </>
       ) : (
         <div className="color-bg-primary h-screen flex-center"></div>
