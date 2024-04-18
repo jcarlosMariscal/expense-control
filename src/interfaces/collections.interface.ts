@@ -21,6 +21,7 @@ export interface ICollectionMain {
   description: string;
   date?: Timestamp;
   category: string;
+  amount: number;
 }
 
 // ----------------- PARAMS METHODS ------------------------------

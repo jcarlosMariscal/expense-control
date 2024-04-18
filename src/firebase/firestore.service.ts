@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 import { IUserProfile } from "../interfaces/auth.interface";
-import { Response, ICategory } from "../interfaces/collections.interface";
+import { Response, ICategory, ICollectionMain } from "../interfaces/collections.interface";
 
 export const getUserProfile = async (
   uid: string
@@ -154,6 +154,23 @@ export const createCategoriesForUser = async (
     success: res,
     message: res ? "Categorias creadas" : "Crecion fallida",
   };
+};
+
+export const createDocumentCollectionMain = async (
+  name: string,
+  uid: string,
+  subCollection:string,
+  document: ICollectionMain
+): Promise<Response> => {
+  try {
+    console.log(document);
+    
+    await addDoc(collection(db, name, uid, subCollection), document);
+
+    return { success: true, message: "Creación correcta" };
+  } catch (error) {
+    return { success: false, message: "Error en creación." };
+  }
 };
 
 export const updateCategory = async (

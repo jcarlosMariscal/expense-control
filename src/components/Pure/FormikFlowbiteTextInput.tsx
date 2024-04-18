@@ -7,10 +7,13 @@ type TProps = {
   name: string;
   placeholder: string;
   id?: string;
+  type:string
 }
 
 export const FormikFlowbiteTextInput = ({ label, handleChange, ...props }: TProps) => {
   const [field, meta, helpers] = useField(props);
+  // console.log(props);
+  
   return (
     <div>
       <Label htmlFor={props.id || props.name} value={label} className="mb-2 block" />

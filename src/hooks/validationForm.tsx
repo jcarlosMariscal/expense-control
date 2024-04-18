@@ -39,3 +39,14 @@ export const categorySchema = yup
     description: yup.string().required(authMessages.req),
   })
   .required();
+export const collectionMainSchema = yup
+  .object()
+  .shape({
+    id: yup.string(),
+    name: yup.string().required(authMessages.req),
+    description: yup.string().required(authMessages.req),
+    amount: yup.number().required(authMessages.req),
+    // category: yup.string().required(authMessages.req),
+    // date: yup.date(),
+  })
+  .required();

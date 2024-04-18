@@ -53,9 +53,9 @@ export const ModalContent = ({ color, sendCategory, initialData }: TProps) => {
         onSubmit={(values) => formData(values)}>
         <Form>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormikFlowbiteTextInput name="name" label="Name" placeholder="Enter a name"
+            <FormikFlowbiteTextInput type="text" name="name" label="Name" placeholder="Enter a name"
               handleChange={handleChange} />
-            <FormikFlowbiteTextInput name="description" label="Description" placeholder="Enter a description"
+            <FormikFlowbiteTextInput type="text"  name="description" label="Description" placeholder="Enter a description"
               handleChange={handleChange} />
         </div>
         <div className="grid grid-cols-1 ssm:grid-cols-2 gap-4 mt-4">
