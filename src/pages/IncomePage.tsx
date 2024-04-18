@@ -12,10 +12,9 @@ export const IncomePage = () => {
   const [collectionData, setCollectionData] = useState<ICollectionMain[] | null>(null);
   const getData = async () => {
     if (!user) return;
-    const response = await getAllCollection("incomes", user?.uid, "incomesData")
-    console.log(response);
-    if(!response.success) setCollectionData(null)
-    console.log(collectionData);
+    const response = await getAllCollection("incomes", user?.uid, "incomesData");
+    if (!response.success) setCollectionData(null);
+    setCollectionData(response.data as ICollectionMain[]);
     
   }
   useEffect(() => {

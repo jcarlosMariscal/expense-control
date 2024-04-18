@@ -29,7 +29,7 @@ export const getAllCollection = async (
   collectionName: string, // Name Colección Main
   uid: string, // User ID
   subCollection:string
-): Promise<Response<ICategory[]>> => {
+): Promise<Response<ICategory[] | ICollectionMain[]>> => {
   const q = query(collection(db, collectionName, uid, subCollection));
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
@@ -145,8 +145,8 @@ export const createCategoriesForUser = async (
     return { success: false, message: "No arreglos" };
   let res: boolean = false;
   if (Array.isArray(catExpense.data) && Array.isArray(catIncome.data)) {
-    const createCatExp = await createCategories(catExpense.data, catExp, uid);
-    const createCatInc = await createCategories(catIncome.data, catInc, uid);
+    const createCatExp = await createCategories(catExpense.data as ICategory[], catExp, uid);
+    const createCatInc = await createCategories(catIncome.data as ICategory[], catInc, uid);
     if (!createCatExp || !createCatInc) res = false;
     res = true;
   }

@@ -42,12 +42,14 @@ export const TableComponent = ({ data }: TProps) => {
               <Table.Cell className="table-cell lg:hidden">
                 {item.description}
               </Table.Cell>
-              <Table.Cell className="table-cell">{item.name}</Table.Cell>
+              <Table.Cell className="table-cell">
+                <span title={`${item.date?.toDate().toLocaleDateString()} ${item.date?.toDate().toTimeString()}`}>{item.date?.toDate().toLocaleDateString()}</span>
+              </Table.Cell>
               <Table.Cell className="table-color">
                 <span>{item.name}</span>
               </Table.Cell>
-              <Table.Cell>{item.category}</Table.Cell>
-              <Table.Cell>${item.name}</Table.Cell>
+              <Table.Cell>{item.name}</Table.Cell>
+              <Table.Cell>$ {item.name}</Table.Cell>
               <Table.Cell>
                 <div className="flex gap-2">
                   <Button pill size="xs" className="p-0 size-8" color="success">
