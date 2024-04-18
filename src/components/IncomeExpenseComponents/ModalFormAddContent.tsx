@@ -5,28 +5,22 @@ import { useContext, useEffect, useState } from "react";
 import {Formik, Form} from 'formik';
 import { FormikFlowbiteTextInput } from "../Pure/FormikFlowbiteTextInput";
 import { AuthContext } from "../../context/AuthContext";
-import { createDocumentCollectionMain, getAllCollection } from "../../firebase/firestore.service";
+import {  getAllCollection } from "../../firebase/firestore.service";
 import icons from "../../data/categoriesIcons";
 import { colors } from "../../data/categoriesColor";
 import { Timestamp } from "firebase/firestore";
-import { alertTimer } from "../../utils/alerts";
-import { AppContext } from "../../context/AppContext";
-// import { AppContext } from "../../context/AppContext";
 
 type TProps = {
   color: string;
+  sendData: (param:ICollectionMain) => void
 };
-export const ModalFormAddContent = ({ color }: TProps) => {
+export const ModalFormAddContent = ({ color, sendData }: TProps) => {
   const { user } = useContext(AuthContext);
-    const initialData:ICollectionMain = {
-    name: "", description: "", amount: 0, category:""
-  }
-    const { modalAdd } = useContext(AppContext);
-  const {toggleModalAdd } = modalAdd;
+    const initialData:ICollectionMain = {name: "", description: "", amount: 0, category:""}
   const [categoryData, setcategoryData] = useState<ICollectionMain>(initialData);
   const [allCategories, setAllCategories] = useState<ICategory[] | null>(null)
   const [isHovered, setIsHovered] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
+  const [selectedCat, setSelectedCat] = useState<ICategory | null>(null);
   const [errorSelectCategory, seterrorSelectCategory] = useState<boolean>(false)
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -45,48 +39,30 @@ export const ModalFormAddContent = ({ color }: TProps) => {
   
   const formData = async (data: ICollectionMain) => {
     if (!user) return;
-    console.log(categoryData.category);
-    
     if (categoryData.category === "") {
       seterrorSelectCategory(true);
       return;
     }
-    const documentData:ICollectionMain = {
-...data, category: categoryData.category, date: Timestamp.now(),
-    }
-    console.log(data);
-    
+    const documentData:ICollectionMain = {...data, category: categoryData.category, date: Timestamp.now()}
     seterrorSelectCategory(false);
-    const response = await createDocumentCollectionMain("incomes", user?.uid, "incomesData", documentData);
-    console.log(response);
-    
-    response.success ? alertTimer("Success", "success", 1500) : alertTimer("Error", "error", 1500);
-    toggleModalAdd(false);
+    sendData(documentData)
   };
   const selectCategory = (category: ICategory) => {
-    console.log(category);
-    
-    setSelectedCategory(category);
+    setSelectedCat(category);
     setcategoryData({ ...categoryData, category: category.id as string });
     seterrorSelectCategory(false);
   }
-  // const getColorCategory = () => {
-  //   return {light: "", strong:""}
-  // }
-  
   const customDropdown = () => {
-    const light = selectedCategory ? colors[selectedCategory.color].light : "";
-    const strong = selectedCategory ? colors[selectedCategory.color].strong : "";
-    const border = !selectedCategory ? "border border-gray-600" : ""
-    const icon = selectedCategory ? icons[selectedCategory.icon] : "";
+    const light = selectedCat ? colors[selectedCat.color].light : "";
+    const strong = selectedCat ? colors[selectedCat.color].strong : "";
+    const border = !selectedCat ? "border border-gray-600" : ""
+    const icon = selectedCat ? icons[selectedCat.icon] : "";
     return (
       <span className={`mt-7 cursor-pointer p-2 rounded-lg color-text flex ${border}`}
         style={{ background: light }}>
-        {
-          selectedCategory ? <span className="mr-2" style={{ color: strong }}>{icon}</span> : ""
-        }
-        {selectedCategory ? selectedCategory.name : "Select a category"}
-    </span>);
+        {selectedCat ? <span className="mr-2" style={{ color: strong }}>{icon}</span> : ""}
+        {selectedCat ? selectedCat.name : "Select a category"}
+      </span>);
   }
   return (
     <>
